@@ -1,0 +1,331 @@
+{
+  "recipe": "product_studio",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999993,
+      "max": 0.999994,
+      "mean": 0.999994
+    },
+    "outside_mask_ssim": {
+      "min": 0.996563,
+      "max": 0.996629,
+      "mean": 0.996592
+    },
+    "structure_similarity": {
+      "min": 0.999952,
+      "max": 0.999955,
+      "mean": 0.999954
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    }
+  },
+  "per_image": [
+    {
+      "file": "product_studio_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996619,
+        "structure_similarity": 0.999952,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996599,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996593,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996585,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996571,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996628,
+        "structure_similarity": 0.999952,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996599,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996572,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996582,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996563,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996629,
+        "structure_similarity": 0.999952,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996595,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996594,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996586,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996565,
+        "structure_similarity": 0.999954,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996618,
+        "structure_similarity": 0.999952,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.9966,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999993,
+        "outside_mask_ssim": 0.996583,
+        "structure_similarity": 0.999953,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996573,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "product_studio_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999994,
+        "outside_mask_ssim": 0.996585,
+        "structure_similarity": 0.999955,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

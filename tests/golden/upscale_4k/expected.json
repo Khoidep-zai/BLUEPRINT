@@ -1,1 +1,331 @@
-{}
+{
+  "recipe": "upscale_4k",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999996,
+      "max": 0.999998,
+      "mean": 0.999997
+    },
+    "outside_mask_ssim": {
+      "min": 0.979448,
+      "max": 0.979888,
+      "mean": 0.979693
+    },
+    "structure_similarity": {
+      "min": 0.99989,
+      "max": 0.999909,
+      "mean": 0.999901
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    }
+  },
+  "per_image": [
+    {
+      "file": "upscale_4k_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.979448,
+        "structure_similarity": 0.999893,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979749,
+        "structure_similarity": 0.999897,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.979613,
+        "structure_similarity": 0.999905,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979754,
+        "structure_similarity": 0.999902,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979848,
+        "structure_similarity": 0.999909,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979652,
+        "structure_similarity": 0.999891,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979723,
+        "structure_similarity": 0.9999,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.979553,
+        "structure_similarity": 0.999905,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979652,
+        "structure_similarity": 0.999905,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979853,
+        "structure_similarity": 0.999908,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979521,
+        "structure_similarity": 0.999896,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.97974,
+        "structure_similarity": 0.999895,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.97953,
+        "structure_similarity": 0.999902,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.979463,
+        "structure_similarity": 0.999903,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.97984,
+        "structure_similarity": 0.999906,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.979715,
+        "structure_similarity": 0.99989,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979808,
+        "structure_similarity": 0.999896,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.979888,
+        "structure_similarity": 0.9999,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.979708,
+        "structure_similarity": 0.999903,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "upscale_4k_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.9798,
+        "structure_similarity": 0.999905,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

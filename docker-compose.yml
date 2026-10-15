@@ -1,34 +1,12 @@
 version: '3.8'
 
+# Self-hosted CPU deployment. The pipeline runs synchronously inside the API
+# process (no database, no queue, no worker daemon) — see PROGRESS.md.
 services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: photoai
-      POSTGRES_USER: photoai
-      POSTGRES_PASSWORD: photoai
-    ports:
-      - "5432:5432"
-
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-
   api:
     build:
       context: .
       dockerfile: infra/docker/Dockerfile.api
-    depends_on:
-      - postgres
-      - redis
     ports:
       - "8000:8000"
-
-  worker:
-    build:
-      context: .
-      dockerfile: infra/docker/Dockerfile.worker
-    depends_on:
-      - postgres
-      - redis
+    restart: unless-stopped

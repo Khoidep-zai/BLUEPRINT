@@ -1,1 +1,416 @@
-{}
+{
+  "recipe": "open_eyes",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 0.0,
+  "best_effort_rate": 1.0,
+  "aggregates": {
+    "ear": {
+      "min": 0.15,
+      "max": 0.15,
+      "mean": 0.15
+    },
+    "identity_cosine": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "outside_mask_ssim": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "structure_similarity": {
+      "min": 0.999994,
+      "max": 0.999997,
+      "mean": 0.999996
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    }
+  },
+  "per_image": [
+    {
+      "file": "open_eyes_00.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_01.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_02.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_03.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_04.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_05.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_06.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_07.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_08.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_09.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_10.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_11.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_12.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_13.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_14.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999994,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_15.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_16.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999995,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_17.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999995,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_18.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    },
+    {
+      "file": "open_eyes_19.png",
+      "passed": false,
+      "best_effort": true,
+      "attempts": 3,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": [
+        "QA check failed: ear_min",
+        "QA failed after 3 attempt(s); returning best-effort result"
+      ]
+    }
+  ]
+}

@@ -21,6 +21,15 @@ class InMemoryStore:
         self._audit_logs: list[AuditLog] = []
         # idempotency key -> job id
         self._idempotency: dict[str, str] = {}
+        # storage_key -> raw bytes (originals and results alike)
+        self._blobs: dict[str, bytes] = {}
+
+    # ----- blobs -----
+    def put_blob(self, storage_key: str, data: bytes) -> None:
+        self._blobs[storage_key] = data
+
+    def get_blob(self, storage_key: str) -> Optional[bytes]:
+        return self._blobs.get(storage_key)
 
     # ----- jobs -----
     def create_job(self, **kwargs) -> Job:
@@ -32,6 +41,11 @@ class InMemoryStore:
 
     def get_job(self, job_id: str) -> Optional[Job]:
         return self._jobs.get(job_id)
+
+    def list_jobs(self, limit: int = 20) -> list[Job]:
+        """Return the most recently created jobs first."""
+        jobs = sorted(self._jobs.values(), key=lambda job: job.created_at, reverse=True)
+        return jobs[:limit]
 
     def get_job_by_idempotency_key(self, key: str) -> Optional[Job]:
         job_id = self._idempotency.get(key)
@@ -47,9 +61,12 @@ class InMemoryStore:
     def set_result(
         self, job: Job, result_asset_id: str, warnings: list
     ) -> Job:
+        from .models.base import utc_now
+
         job.result_asset_id = result_asset_id
         job.warnings = warnings
         job.status = JobStatus.DONE.value
+        job.finished_at = utc_now()
         self._jobs[job.id] = job
         return job
 

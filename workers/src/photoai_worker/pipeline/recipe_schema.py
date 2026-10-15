@@ -44,8 +44,10 @@ class QAStep(BaseModel):
     ear_min: Optional[float] = None
     identity_cosine_min: Optional[float] = None
     outside_mask_ssim_min: Optional[float] = None
+    structure_similarity_min: Optional[float] = None
     clip_ratio_max: Optional[float] = None
     delta_e_skin_max: Optional[float] = None
+    texture_variance_min: Optional[float] = None
     ocr_recheck: Optional[bool] = None
     person_recheck: Optional[bool] = None
 

@@ -83,3 +83,21 @@ def texture_variance(image: Image.Image, region: Optional[np.ndarray] = None) ->
     if region is not None:
         return float(high_pass[region].var())
     return float(high_pass.var())
+
+
+def auto_skin_mask(image: Image.Image) -> Optional[Image.Image]:
+    """Heuristic YCbCr skin mask (no model needed, self-hosted CPU).
+
+    Returns an ``L``-mode mask, or ``None`` when the image contains no
+    skin-like pixels. Used by the QA step to measure ``delta_e_skin`` for
+    recipes that gate on it, even before a real face parser lands.
+    """
+    rgb = np.asarray(image.convert("RGB"), dtype=np.float64)
+    red, green, blue = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+    luma = 0.299 * red + 0.587 * green + 0.114 * blue
+    cb = 128.0 - 0.168736 * red - 0.331264 * green + 0.5 * blue
+    cr = 128.0 + 0.5 * red - 0.418688 * green - 0.081312 * blue
+    mask = (cb >= 77) & (cb <= 127) & (cr >= 133) & (cr <= 173) & (luma > 40)
+    if not mask.any():
+        return None
+    return Image.fromarray((mask.astype(np.uint8) * 255), mode="L")

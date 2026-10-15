@@ -21,6 +21,13 @@ def run(context: JobContext, config: Dict[str, Any]) -> JobContext:
         raise ValueError("blend step requires context.edited")
 
     edited = context.edited
+    if config.get("method") == "none":
+        # Whole-image output (e.g. upscale): keep the edited image as-is,
+        # including a different output size. No compositing happens.
+        context.image = edited
+        context.edit_mask = None
+        context.log("blend", "ok", detail="method none")
+        return context
     if edited.size != context.original.size:
         edited = edited.resize(context.original.size, Image.LANCZOS)
 

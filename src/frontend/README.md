@@ -1,8 +1,22 @@
-# Photo AI Frontend (Next.js) - placeholder
+# Photo AI Tool — Frontend
 
-This directory is a placeholder for the Next.js frontend. No full frontend
-build is required yet. The P0 flow is:
+App tĩnh (HTML/CSS/JS thuần, không cần build) được FastAPI phục vụ tại `/`.
+Chọn chức năng → tải ảnh → xem kết quả + báo cáo QA. Không cần đăng nhập.
 
-select function -> upload image -> process -> output
+## Chạy
 
-Add `src/frontend/app/` pages and components here in a later phase.
+```powershell
+# Từ gốc dự án
+$env:PYTHONPATH = "src/backend;workers/src;."
+python -m uvicorn photoai_api.main:app --host 127.0.0.1 --port 8000
+# Mở http://127.0.0.1:8000
+```
+
+## Ghi chú thiết kế
+
+- Không dùng framework/build step: hợp với self-host CPU, chạy ngay bằng `uvicorn`.
+- Toàn bộ trạng thái (job, ảnh, QA report) nằm trong bộ nhớ của API — không database.
+- Có thể thay bằng Next.js/React sau này; chỉ cần gọi đúng các endpoint:
+  - `GET /api/recipes`
+  - `POST /api/jobs` (multipart: `file`, `recipe_id`, `params`, `ownership_confirmed`)
+  - `GET /api/jobs/{id}`, `GET /api/jobs/{id}/result`, `GET /api/jobs`

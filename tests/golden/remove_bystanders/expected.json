@@ -1,1 +1,331 @@
-{}
+{
+  "recipe": "remove_bystanders",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999998,
+      "max": 0.999999,
+      "mean": 0.999999
+    },
+    "outside_mask_ssim": {
+      "min": 0.99955,
+      "max": 0.999604,
+      "mean": 0.999583
+    },
+    "structure_similarity": {
+      "min": 0.999908,
+      "max": 0.999931,
+      "mean": 0.99992
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    }
+  },
+  "per_image": [
+    {
+      "file": "remove_bystanders_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999596,
+        "structure_similarity": 0.999914,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999563,
+        "structure_similarity": 0.999915,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999592,
+        "structure_similarity": 0.99992,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999584,
+        "structure_similarity": 0.999922,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999577,
+        "structure_similarity": 0.999908,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.99957,
+        "structure_similarity": 0.999911,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999596,
+        "structure_similarity": 0.999923,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.99958,
+        "structure_similarity": 0.99991,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999587,
+        "structure_similarity": 0.999919,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999601,
+        "structure_similarity": 0.999929,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999563,
+        "structure_similarity": 0.999918,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999589,
+        "structure_similarity": 0.999925,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999604,
+        "structure_similarity": 0.999929,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999575,
+        "structure_similarity": 0.99992,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999591,
+        "structure_similarity": 0.999918,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999604,
+        "structure_similarity": 0.999924,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.99955,
+        "structure_similarity": 0.999917,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999569,
+        "structure_similarity": 0.999917,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 0.999565,
+        "structure_similarity": 0.999925,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_bystanders_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 0.999598,
+        "structure_similarity": 0.999931,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

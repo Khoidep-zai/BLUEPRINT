@@ -1,17 +1,18 @@
+# Photo AI Tool — development dependencies.
 pytest>=7.4.0
 pytest-cov>=4.1.0
 black>=23.0.0
 ruff>=0.1.0
 mypy>=1.7.0
+
+# Runtime deps (kept in sync with requirements.txt).
 pydantic>=2.5.0
+pydantic-settings>=2.1.0
 pyyaml>=6.0.1
-sqlalchemy>=2.0.0
-alembic>=1.13.0
 fastapi>=0.104.0
 uvicorn>=0.24.0
-redis>=5.0.0
-rq>=1.15.0
+python-multipart>=0.0.6
 pillow>=10.1.0
 numpy>=1.26.0
-scikit-image>=0.22.0
 httpx>=0.25.0
+opencv-python-headless>=4.8.0

@@ -1,0 +1,331 @@
+{
+  "recipe": "restore_old_photo",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999995,
+      "max": 0.999998,
+      "mean": 0.999996
+    },
+    "outside_mask_ssim": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "structure_similarity": {
+      "min": 0.999841,
+      "max": 0.999886,
+      "mean": 0.999866
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 1.3e-05,
+      "mean": 3e-06
+    }
+  },
+  "per_image": [
+    {
+      "file": "restore_old_photo_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999879,
+        "clip_ratio": 1.3e-05,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999865,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999865,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.99986,
+        "clip_ratio": 1e-05,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999856,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999998,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999856,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999859,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999995,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999861,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999886,
+        "clip_ratio": 1.3e-05,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999864,
+        "clip_ratio": 1.2e-05,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999871,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999866,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999995,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999863,
+        "clip_ratio": 9e-06,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999882,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999869,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999853,
+        "clip_ratio": 0.0,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "restore_old_photo_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999841,
+        "clip_ratio": 9e-06,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

@@ -1,1 +1,333 @@
-{}
+{
+  "recipe": "remove_watermark",
+  "images": 20,
+  "runner_params": {
+    "ownership_confirmed": true
+  },
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999996,
+      "max": 0.999997,
+      "mean": 0.999997
+    },
+    "outside_mask_ssim": {
+      "min": 0.996827,
+      "max": 0.996885,
+      "mean": 0.996855
+    },
+    "structure_similarity": {
+      "min": 0.999865,
+      "max": 0.999885,
+      "mean": 0.999874
+    },
+    "clip_ratio": {
+      "min": 0.000449,
+      "max": 0.000744,
+      "mean": 0.000581
+    }
+  },
+  "per_image": [
+    {
+      "file": "remove_watermark_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996884,
+        "structure_similarity": 0.999876,
+        "clip_ratio": 0.000521,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996862,
+        "structure_similarity": 0.999873,
+        "clip_ratio": 0.000543,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996843,
+        "structure_similarity": 0.99987,
+        "clip_ratio": 0.000495,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996841,
+        "structure_similarity": 0.999868,
+        "clip_ratio": 0.000561,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996847,
+        "structure_similarity": 0.999884,
+        "clip_ratio": 0.000696,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996885,
+        "structure_similarity": 0.999877,
+        "clip_ratio": 0.000534,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996856,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.000449,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996852,
+        "structure_similarity": 0.999871,
+        "clip_ratio": 0.000581,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996833,
+        "structure_similarity": 0.999865,
+        "clip_ratio": 0.00065,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996844,
+        "structure_similarity": 0.999885,
+        "clip_ratio": 0.000642,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996881,
+        "structure_similarity": 0.999877,
+        "clip_ratio": 0.000573,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996858,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.000744,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996847,
+        "structure_similarity": 0.999869,
+        "clip_ratio": 0.000656,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996827,
+        "structure_similarity": 0.999867,
+        "clip_ratio": 0.00061,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996846,
+        "structure_similarity": 0.999884,
+        "clip_ratio": 0.000606,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996881,
+        "structure_similarity": 0.999876,
+        "clip_ratio": 0.000599,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996863,
+        "structure_similarity": 0.999872,
+        "clip_ratio": 0.00052,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996854,
+        "structure_similarity": 0.999871,
+        "clip_ratio": 0.00057,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999997,
+        "outside_mask_ssim": 0.996844,
+        "structure_similarity": 0.999868,
+        "clip_ratio": 0.000512,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "remove_watermark_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999996,
+        "outside_mask_ssim": 0.996846,
+        "structure_similarity": 0.999885,
+        "clip_ratio": 0.000552,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

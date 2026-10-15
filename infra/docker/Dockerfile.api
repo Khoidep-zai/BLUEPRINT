@@ -2,9 +2,18 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Monorepo imports: project root + backend + worker packages.
+ENV PYTHONPATH=/app:/app/src/backend:/app/workers/src \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["uvicorn", "src.backend.photoai_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
+
+# Self-hosted CPU, in-memory store (no database, no queue):
+# the API serves both /api endpoints and the bundled frontend at /.
+CMD ["uvicorn", "photoai_api.main:app", "--host", "0.0.0.0", "--port", "8000"]

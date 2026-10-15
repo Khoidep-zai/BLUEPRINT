@@ -101,3 +101,31 @@ def detect_eyes(
     left = compute_ear(eye_landmarks(face, ear=left_ear, eye="left"))
     right = compute_ear(eye_landmarks(face, ear=right_ear, eye="right"))
     return EyeState(left_ear=left, right_ear=right, threshold=threshold)
+
+
+def recheck_ear(
+    image: Image.Image,
+    face: Optional[FaceBox] = None,
+    previous: Optional[EyeState] = None,
+    params: Optional[dict] = None,
+) -> Optional[EyeState]:
+    """Re-detect EAR on the *edited* image (P1 QA re-check).
+
+    The real implementation runs a landmark model on ``image``. Until that
+    model lands, the measurement is simulated from the ``post_left_ear`` /
+    ``post_right_ear`` params when they are provided; otherwise the pre-edit
+    EAR is returned unchanged, so recipes that gate on ``ear_min`` fail
+    honestly with the mock provider instead of silently passing.
+    """
+    if previous is None or face is None:
+        return None
+    params = params or {}
+    left = float(params.get("post_left_ear", previous.left_ear))
+    right = float(params.get("post_right_ear", previous.right_ear))
+    return detect_eyes(
+        image,
+        face=face,
+        left_ear=left,
+        right_ear=right,
+        threshold=previous.threshold,
+    )

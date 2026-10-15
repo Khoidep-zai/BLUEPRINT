@@ -28,7 +28,9 @@ def run(context: JobContext, config: Dict[str, Any]) -> JobContext:
         )
         detections["eyes"] = eyes
 
-    if config.get("persons"):
+    if config.get("persons") or config.get("person"):
+        # ``person`` and ``persons`` are both accepted: recipes authored as
+        # ``person: true`` must not silently skip detection.
         persons = person.detect_persons(context.image)
         detections["persons"] = persons
         detections["main_person"] = person.main_subject(persons, context.image.size)

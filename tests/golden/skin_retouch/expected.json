@@ -1,0 +1,406 @@
+{
+  "recipe": "skin_retouch",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "ear": {
+      "min": 0.15,
+      "max": 0.15,
+      "mean": 0.15
+    },
+    "identity_cosine": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "outside_mask_ssim": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "structure_similarity": {
+      "min": 0.999996,
+      "max": 0.999999,
+      "mean": 0.999997
+    },
+    "clip_ratio": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0
+    },
+    "delta_e_skin": {
+      "min": 0.032005,
+      "max": 0.051544,
+      "mean": 0.044813
+    },
+    "texture_variance": {
+      "min": 32.667319,
+      "max": 42.45727,
+      "mean": 36.310265
+    }
+  },
+  "per_image": [
+    {
+      "file": "skin_retouch_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.032005,
+        "texture_variance": 39.04688,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.051209,
+        "texture_variance": 37.634736,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.047799,
+        "texture_variance": 34.868119,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.046757,
+        "texture_variance": 34.806639,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999999,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.045865,
+        "texture_variance": 33.484532,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.03219,
+        "texture_variance": 39.552229,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.051463,
+        "texture_variance": 37.86718,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.048018,
+        "texture_variance": 35.879204,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.046643,
+        "texture_variance": 33.785985,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.045509,
+        "texture_variance": 35.153534,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.032433,
+        "texture_variance": 37.545226,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999996,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.051544,
+        "texture_variance": 36.225937,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.048026,
+        "texture_variance": 35.157071,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.04707,
+        "texture_variance": 36.273243,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.045687,
+        "texture_variance": 34.35269,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.032096,
+        "texture_variance": 42.45727,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999998,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.051527,
+        "texture_variance": 36.966617,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.048346,
+        "texture_variance": 37.509008,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.046587,
+        "texture_variance": 34.971878,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "skin_retouch_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "ear": 0.15,
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999997,
+        "clip_ratio": 0.0,
+        "delta_e_skin": 0.045477,
+        "texture_variance": 32.667319,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}

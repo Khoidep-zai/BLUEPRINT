@@ -1,0 +1,381 @@
+{
+  "recipe": "golden_hour",
+  "images": 20,
+  "runner_params": {},
+  "pass_rate": 1.0,
+  "best_effort_rate": 0.0,
+  "aggregates": {
+    "identity_cosine": {
+      "min": 0.999999,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "outside_mask_ssim": {
+      "min": 1.0,
+      "max": 1.0,
+      "mean": 1.0
+    },
+    "structure_similarity": {
+      "min": 0.999984,
+      "max": 0.999988,
+      "mean": 0.999986
+    },
+    "clip_ratio": {
+      "min": 0.003229,
+      "max": 0.003702,
+      "mean": 0.003484
+    },
+    "delta_e_skin": {
+      "min": 0.831163,
+      "max": 0.871437,
+      "mean": 0.849089
+    },
+    "texture_variance": {
+      "min": 11.081118,
+      "max": 12.055779,
+      "mean": 11.601113
+    }
+  },
+  "per_image": [
+    {
+      "file": "golden_hour_00.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003529,
+        "delta_e_skin": 0.831163,
+        "texture_variance": 11.961945,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_01.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003295,
+        "delta_e_skin": 0.85094,
+        "texture_variance": 11.853028,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_02.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999986,
+        "clip_ratio": 0.00368,
+        "delta_e_skin": 0.837524,
+        "texture_variance": 11.690092,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_03.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999986,
+        "clip_ratio": 0.003702,
+        "delta_e_skin": 0.854821,
+        "texture_variance": 11.608661,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_04.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999984,
+        "clip_ratio": 0.003581,
+        "delta_e_skin": 0.871196,
+        "texture_variance": 11.081118,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_05.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003464,
+        "delta_e_skin": 0.831417,
+        "texture_variance": 11.836062,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_06.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003271,
+        "delta_e_skin": 0.851023,
+        "texture_variance": 11.712525,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_07.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999985,
+        "clip_ratio": 0.003519,
+        "delta_e_skin": 0.836821,
+        "texture_variance": 11.702376,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_08.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999985,
+        "clip_ratio": 0.003623,
+        "delta_e_skin": 0.854896,
+        "texture_variance": 11.357784,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_09.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999986,
+        "clip_ratio": 0.003291,
+        "delta_e_skin": 0.871094,
+        "texture_variance": 11.311456,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_10.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999988,
+        "clip_ratio": 0.003229,
+        "delta_e_skin": 0.831521,
+        "texture_variance": 12.055779,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_11.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999986,
+        "clip_ratio": 0.003342,
+        "delta_e_skin": 0.851188,
+        "texture_variance": 11.767856,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_12.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999988,
+        "clip_ratio": 0.003433,
+        "delta_e_skin": 0.837021,
+        "texture_variance": 11.49534,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_13.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999985,
+        "clip_ratio": 0.003623,
+        "delta_e_skin": 0.854598,
+        "texture_variance": 11.500629,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_14.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999988,
+        "clip_ratio": 0.003427,
+        "delta_e_skin": 0.871437,
+        "texture_variance": 11.50656,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_15.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 0.999999,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003568,
+        "delta_e_skin": 0.831208,
+        "texture_variance": 11.674089,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_16.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003661,
+        "delta_e_skin": 0.850635,
+        "texture_variance": 11.660535,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_17.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999987,
+        "clip_ratio": 0.003422,
+        "delta_e_skin": 0.837241,
+        "texture_variance": 11.614604,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_18.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999985,
+        "clip_ratio": 0.003328,
+        "delta_e_skin": 0.854691,
+        "texture_variance": 11.286502,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    },
+    {
+      "file": "golden_hour_19.png",
+      "passed": true,
+      "best_effort": false,
+      "attempts": 1,
+      "metrics": {
+        "identity_cosine": 1.0,
+        "outside_mask_ssim": 1.0,
+        "structure_similarity": 0.999988,
+        "clip_ratio": 0.003689,
+        "delta_e_skin": 0.871337,
+        "texture_variance": 11.345311,
+        "ocr_recheck": true,
+        "person_recheck": true
+      },
+      "warnings": []
+    }
+  ]
+}
