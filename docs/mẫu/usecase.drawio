@@ -1,0 +1,124 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="usecase_diagram_l2" name="Use Case - Luồng L2 Bảo Hành">
+    <mxGraphModel dx="1106" dy="656" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1240" pageHeight="1080" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontColor=#000000;" value="&lt;b style=&quot;font-size:16px&quot;&gt;SƠ ĐỒ CA SỬ DỤNG (USE CASE DIAGRAM) - PHÂN HỆ TIẾP NHẬN BẢO HÀNH (L2)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px&quot; color=&quot;#555555&quot;&gt;Hệ thống: Mekong Mobile CRM | Tiêu chuẩn UML 2.5 | Phạm vi: Tiếp nhận &amp;amp; Phân loại sự cố (L2)&lt;/font&gt;" vertex="1">
+          <mxGeometry height="50" width="1160" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SystemBoundary" parent="1" style="swimlane;whiteSpace=wrap;html=1;startSize=32;fontStyle=1;fontSize=12;fontColor=#000000;fillColor=#F2F2F2;swimlaneFillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.5;collapsible=0;rounded=0;" value="Phân hệ Tiếp nhận &amp; Phân loại yêu cầu bảo hành (Luồng L2 - Mekong Mobile)" vertex="1">
+          <mxGeometry height="810" width="760" x="260" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UC1" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="UC1: Tra cứu hồ sơ&lt;br&gt;Khách hàng &amp;amp; Thiết bị&lt;br&gt;(Theo SĐT / IMEI - FR1)" vertex="1">
+          <mxGeometry height="84" width="260" x="40" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="UC1_Ext" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="Đăng ký hồ sơ&lt;br&gt;Khách hàng mới&lt;br&gt;(Khi SĐT chưa có - QT-01)" vertex="1">
+          <mxGeometry height="84" width="260" x="450" y="56" as="geometry" />
+        </mxCell>
+        <mxCell id="UC2_Inc1" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="Xác minh thời hạn&lt;br&gt;bảo hành thiết bị&lt;br&gt;(QT-05: Ngày mua &amp;amp; Serial)" vertex="1">
+          <mxGeometry height="84" width="260" x="450" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="UC2" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=2.25;" value="UC2: Khởi tạo phiếu&lt;br&gt;tiếp nhận bảo hành&lt;br&gt;(Cốt lõi luồng L2 - FR2 / US2)" vertex="1">
+          <mxGeometry height="84" width="260" x="40" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="UC2_Inc2" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="Phân loại sự cố &amp;amp;&lt;br&gt;Tự động tính SLA&lt;br&gt;(FR3 / QT-04: Hạn 24h/72h)" vertex="1">
+          <mxGeometry height="84" width="260" x="450" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="UC2_Ext" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="In biên nhận&lt;br&gt;tiếp nhận cho khách&lt;br&gt;(In phiếu bàn giao máy)" vertex="1">
+          <mxGeometry height="84" width="260" x="450" y="344" as="geometry" />
+        </mxCell>
+        <mxCell id="UC4" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="UC4: Tra cứu &amp;amp; Lọc&lt;br&gt;danh sách phiếu bảo hành&lt;br&gt;(Lọc theo Status, Center - FR5)" vertex="1">
+          <mxGeometry height="84" width="260" x="40" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="UC5" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="UC5: Giám sát tiến độ &amp;amp;&lt;br&gt;Cảnh báo hạn cam kết (SLA)&lt;br&gt;(Cảnh báo quá hạn 24h)" vertex="1">
+          <mxGeometry height="84" width="260" x="40" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="UC3" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="UC3: Cập nhật trạng thái&lt;br&gt;phiếu bảo hành&lt;br&gt;(MỚI → ĐÃ PHÂN CÔNG - FR4)" vertex="1">
+          <mxGeometry height="84" width="260" x="45" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="UC3_Inc" parent="SystemBoundary" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;fontColor=#000000;fontSize=11;strokeWidth=1.25;" value="Ghi nhật ký lịch sử&lt;br&gt;chuyển trạng thái&lt;br&gt;(Bảng ticket_status_log - QT-06)" vertex="1">
+          <mxGeometry height="84" width="260" x="455" y="450" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeInc_UC3" edge="1" parent="SystemBoundary" source="UC3" style="edgeStyle=none;html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" target="UC3_Inc" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Receptionist" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;fontColor=#000000;fontSize=11;" value="Nhân viên tiếp nhận&lt;br&gt;(Receptionist - Quầy lễ tân)" vertex="1">
+          <mxGeometry height="80" width="40" x="100" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_Manager" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;fontColor=#000000;fontSize=11;" value="Quản lý trung tâm&lt;br&gt;(Center Manager)" vertex="1">
+          <mxGeometry height="80" width="40" x="100" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="Actor_ERP" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeColor=#000000;strokeWidth=1.5;fillColor=#FFFFFF;fontColor=#000000;fontSize=11;" value="&amp;lt;&amp;lt;System&amp;gt;&amp;gt;&lt;br&gt;Hệ thống ERP / Kho bán lẻ&lt;br&gt;(Tra cứu IMEI &amp;amp; Hóa đơn)" vertex="1">
+          <mxGeometry height="80" width="40" x="1080" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeAct_UC1" edge="1" parent="1" source="Actor_Receptionist" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeAct_UC2" edge="1" parent="1" source="Actor_Receptionist" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeAct_UC3" edge="1" parent="1" source="Actor_Receptionist" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeAct_UC4" edge="1" parent="1" source="Actor_Receptionist" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeMgr_UC4" edge="1" parent="1" source="Actor_Manager" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeMgr_UC5" edge="1" parent="1" source="Actor_Manager" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeERP_UC2Inc1" edge="1" parent="1" source="Actor_ERP" style="edgeStyle=none;html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" target="UC2_Inc1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeExt_UC1" edge="1" parent="1" source="UC1_Ext" style="edgeStyle=none;html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" target="UC1" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeInc_UC2_1" edge="1" parent="1" source="UC2" style="edgeStyle=none;html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" target="UC2_Inc1" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeInc_UC2_2" edge="1" parent="1" source="UC2" style="edgeStyle=none;html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" target="UC2_Inc2" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EdgeExt_UC2" edge="1" parent="1" source="UC2_Ext" style="edgeStyle=none;html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" target="UC2" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_box" parent="1" style="rounded=0;html=1;fillColor=#FFFFFF;strokeColor=#666666;strokeWidth=1;" value="" vertex="1">
+          <mxGeometry height="130" width="760" x="260" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="legend_title" parent="1" style="text;html=1;whiteSpace=wrap;verticalAlign=middle;fontColor=#000000;fontSize=11;align=left;spacingLeft=6;" value="&lt;b&gt;CHÚ THÍCH QUAN HỆ UML (LEGEND)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="24" width="400" x="266" y="924" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_e0" edge="1" parent="1" style="html=1;rounded=0;endArrow=none;strokeColor=#000000;strokeWidth=1.25;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="968" as="sourcePoint" />
+            <mxPoint x="350" y="968" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lg_t0" parent="1" style="text;html=1;whiteSpace=wrap;verticalAlign=middle;fontColor=#000000;fontSize=11;align=left;" value="Association (nét liền): tác nhân tương tác trực tiếp với ca sử dụng." vertex="1">
+          <mxGeometry height="26" width="645" x="365" y="955" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_e1" edge="1" parent="1" style="html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="998" as="sourcePoint" />
+            <mxPoint x="350" y="998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lg_t1" parent="1" style="text;html=1;whiteSpace=wrap;verticalAlign=middle;fontColor=#000000;fontSize=11;align=left;" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt; (nét đứt): UC nguồn BẮT BUỘC thực thi UC đích kèm theo (mũi tên hướng về UC được include)." vertex="1">
+          <mxGeometry height="26" width="645" x="365" y="985" as="geometry" />
+        </mxCell>
+        <mxCell id="lg_e2" edge="1" parent="1" style="html=1;rounded=0;dashed=1;endArrow=open;endFill=0;endSize=10;strokeColor=#000000;strokeWidth=1.25;fontSize=10;fontColor=#000000;labelBackgroundColor=#FFFFFF;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="1028" as="sourcePoint" />
+            <mxPoint x="350" y="1028" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lg_t2" parent="1" style="text;html=1;whiteSpace=wrap;verticalAlign=middle;fontColor=#000000;fontSize=11;align=left;" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt; (nét đứt): UC nguồn chỉ kích hoạt khi thỏa điều kiện rẽ nhánh (mũi tên hướng về UC được mở rộng)." vertex="1">
+          <mxGeometry height="26" width="645" x="365" y="1015" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

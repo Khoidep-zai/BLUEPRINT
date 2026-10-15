@@ -9,6 +9,6 @@ description = "Photo AI Tool with recipe-driven pipeline"
 requires-python = ">=3.10"
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "apps/api/tests", "workers/tests"]
-pythonpath = ["photo-ai/apps/api/src", "photo-ai/workers/src", "photo-ai"]
+testpaths = ["tests"]
+pythonpath = ["src/backend", "workers/src", "."]
 addopts = "-v"

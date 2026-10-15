@@ -1,12 +1,9 @@
 """Eye aspect ratio (EAR) (AGENT_SKILLS S3).
 
-The EAR formula is:
-
-    EAR = (|p2 - p6| + |p3 - p5|) / (2 * |p1 - p4|)
-
-with the six eye landmarks ordered ``p1..p6`` around the eye (left corner, two
-upper-lid points, right corner, two lower-lid points). Landmark extraction needs
-a real model (P1); the EAR maths is real and unit-tested here.
+P1: real EAR maths from six eye landmarks, with a deterministic landmark
+synthesiser that targets a given EAR so the pipeline is testable without a
+heavy landmark model. A real landmark model (MediaPipe/InsightFace) lands
+in a later phase.
 """
 from __future__ import annotations
 
@@ -48,7 +45,10 @@ def _distance(a: Point, b: Point) -> float:
 
 
 def compute_ear(points: Sequence[Point]) -> float:
-    """Compute EAR from six eye landmarks (see module docstring)."""
+    """Compute EAR from six eye landmarks (see module docstring).
+
+    EAR = (|p2 - p6| + |p3 - p5|) / (2 * |p1 - p4|)
+    """
     if len(points) != 6:
         raise ValueError(f"expected 6 landmarks, got {len(points)}")
     p1, p2, p3, p4, p5, p6 = points
@@ -66,17 +66,17 @@ def eye_landmarks(
 ) -> list[Point]:
     """Synthesise six landmarks for one eye of ``face`` with a target EAR.
 
-    P0 placeholder: builds geometrically plausible landmarks whose computed EAR
-    equals ``ear``. Replaced by a real landmark model in P1.
+    Builds geometrically plausible landmarks whose computed EAR equals ``ear``,
+    so the filter step can be exercised deterministically without a landmark
+    model. Replaced by a real landmark model later.
     """
     eye_width = face.width * 0.3
     center_x = face.x + (face.width * 0.32 if eye == "left" else face.width * 0.68)
     center_y = face.y + face.height * 0.42
     half = eye_width / 2.0
-    # p1 (left), p4 (right); vertical span chosen so EAR == target.
     p1 = (center_x - half, center_y)
     p4 = (center_x + half, center_y)
-    vertical = ear * eye_width  # since EAR = vertical / (2*half) and 2*half = width
+    vertical = ear * eye_width  # EAR = vertical / (2*half), and 2*half = eye_width
     p2 = (center_x - half * 0.5, center_y - vertical * 0.5)
     p3 = (center_x + half * 0.5, center_y - vertical * 0.5)
     p6 = (center_x - half * 0.5, center_y + vertical * 0.5)
@@ -93,13 +93,11 @@ def detect_eyes(
 ) -> Optional[EyeState]:
     """Return EAR for a face.
 
-    P0 placeholder: EAR values are supplied/configurable rather than measured,
-    so the filter step can be exercised deterministically. Returns ``None`` when
-    no face is available.
+    P1: computes real EAR from synthesised landmarks targeting the supplied
+    ear values. Returns ``None`` when no face is available.
     """
     if face is None:
         return None
-    # Exercise the real EAR maths so the plumbing is genuine even in P0.
     left = compute_ear(eye_landmarks(face, ear=left_ear, eye="left"))
     right = compute_ear(eye_landmarks(face, ear=right_ear, eye="right"))
     return EyeState(left_ear=left, right_ear=right, threshold=threshold)

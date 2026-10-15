@@ -6,7 +6,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 
 for path in [
     ROOT,  # providers/, recipes/
-    os.path.join(ROOT, "apps", "api", "src"),  # photoai_api
+    os.path.join(ROOT, "src", "backend"),  # src.backend.photoai_api
     os.path.join(ROOT, "workers", "src"),  # photoai_worker
 ]:
     if path not in sys.path:

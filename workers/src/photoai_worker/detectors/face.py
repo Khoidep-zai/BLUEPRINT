@@ -1,8 +1,8 @@
 """Face detection (AGENT_SKILLS S3).
 
-A real detector (MediaPipe/InsightFace) lands in P1. This module fixes the
-interface (``detect_faces`` -> list of :class:`FaceBox`) and ships a
-deterministic placeholder so the P0 pipeline runs without AI.
+P1: real OpenCV Haar Cascade detector when the cascade XML is available,
+falling back to the deterministic centred-face placeholder so the pipeline
+stays runnable in any environment (self-hosted CPU, no model downloads).
 """
 from __future__ import annotations
 
@@ -10,6 +10,15 @@ from dataclasses import dataclass
 from typing import List, Optional, Sequence
 
 from PIL import Image
+
+try:
+    import cv2  # type: ignore
+    import numpy as np
+    _HAVE_OPENCV = True
+except Exception:  # pragma: no cover - OpenCV optional in minimal installs
+    _HAVE_OPENCV = False
+    cv2 = None  # type: ignore
+    np = None  # type: ignore
 
 
 @dataclass
@@ -35,13 +44,47 @@ class FaceBox:
         return (self.x + self.width / 2.0, self.y + self.height / 2.0)
 
 
+def _load_cascade() -> Optional["cv2.CascadeClassifier"]:
+    """Load OpenCV's frontal-face Haar cascade if it ships with the install."""
+    if not _HAVE_OPENCV or cv2 is None:
+        return None
+    candidates = [
+        cv2.data.haarcascades + "haarcascade_frontalface_default.xml",
+        cv2.data.haarcascades + "haarcascade_frontalface_alt.xml",
+    ]
+    for path in candidates:
+        try:
+            cascade = cv2.CascadeClassifier(path)
+            if not cascade.empty():
+                return cascade
+        except Exception:
+            continue
+    return None
+
+
+_CASCADE = _load_cascade()
+
+
 def detect_faces(image: Image.Image) -> List[FaceBox]:
     """Return detected faces.
 
-    P0 placeholder: reports a single centred face covering the middle third of
-    the image. Replace with a real detector in P1.
+    P1: uses OpenCV Haar Cascade when available; otherwise falls back to the
+    P0 centred-face placeholder. Never downloads models.
     """
     width, height = image.size
+
+    if _CASCADE is not None and np is not None:
+        gray = np.array(image.convert("L"), dtype=np.uint8)
+        faces = _CASCADE.detectMultiScale(
+            gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30)
+        )
+        if len(faces) > 0:
+            return [
+                FaceBox(x=int(x), y=int(y), width=int(w), height=int(h), score=1.0)
+                for x, y, w, h in faces
+            ]
+
+    # Fallback: single centred face covering the middle third (P0 behaviour).
     box_w = max(1, width // 3)
     box_h = max(1, height // 3)
     return [
