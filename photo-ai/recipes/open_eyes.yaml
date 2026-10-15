@@ -1,0 +1,13 @@
+id: open_eyes
+version: 1
+steps:
+  - detect: { faces: true, eyes_ear: true }
+  - filter: { only_closed_eyes: true, ear_below: 0.2 }
+  - edit:   { editor: inpaint, provider: mock, strength: 0.5, padding: 0.3 }
+  - blend:  { method: feather, radius_px: 8 }
+  - qa:
+      ear_min: 0.2
+      identity_cosine_min: 0.85
+      outside_mask_ssim_min: 0.98
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/open_eyes.vi.md, en: prompts/open_eyes.en.md }

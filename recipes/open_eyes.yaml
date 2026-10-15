@@ -1,0 +1,10 @@
+id: open_eyes
+version: 1
+steps:
+  - detect: { faces: true, eyes_ear: true }
+  - filter: { min_confidence: 0.5 }
+  - edit:   { provider: mock, strength: 0.5, padding: 0.3, prompt_id: open_eyes }
+  - blend:  { method: feather, radius_px: 8 }
+  - qa: {}
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/open_eyes.vi.md, en: prompts/open_eyes.en.md }

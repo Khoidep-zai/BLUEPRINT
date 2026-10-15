@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "photo-ai-tool"
+version = "0.1.0"
+description = "Photo AI Tool with recipe-driven pipeline"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "apps/api/tests", "workers/tests"]
+pythonpath = ["photo-ai/apps/api/src", "photo-ai/workers/src", "photo-ai"]
+addopts = "-v"
