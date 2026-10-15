@@ -14,18 +14,23 @@
 - [x] P0: 47 unit tests pass; docs/reports/phase-P0.md
 
 ## Đang làm
-- [ ] P1: Detector mặt + EAR (S3); golden set mắt nhắm/mở ≥ 95%
+- [ ] P1: Nhập yêu cầu chi tiết 10 chức năng vào recipes/prompts; Detector mặt + EAR (S3); golden set mắt nhắm/mở ≥ 95%
 
-## Quyết định đã chốt
+## Quyết định đã chốt (theo yêu cầu người dùng)
+- Độ phân giải mục tiêu phục chế ảnh cũ: **Full HD 4K** (thay cho "Full HD 32k")
+- Provider chỉnh sửa chính: **ưu tiên chất lượng**
+- Triển khai: **tự host CPU**, ưu tiên viết nhẹ, nhanh, tốt, đạt chất lượng
+- Giao diện app: **ko cần đăng nhập**, chỉ cần tạo ra app có giao diện
 - Provider mặc định P0: mock:v1
-- Upscale tối đa cạnh dài 8192px
+- Stack: **Python** (FastAPI, pytest, OpenCV, Pillow, numpy) — không dùng Java
+- Upscale tối đa cạnh dài: 8192px (P0), mở ra 4K cho P1+
 - Gốc dự án: `photo-ai/` (theo blueprint §3)
 
-## Câu hỏi cho người dùng (chưa chốt — cần trả lời trước P3 chức năng 7)
-1. Độ phân giải mục tiêu của phục chế ảnh cũ (thay cho "Full HD 32k")?
-2. Provider chỉnh sửa chính: ưu tiên chi phí hay chất lượng?
-3. Triển khai đám mây hay tự host GPU?
-4. Cần đăng nhập/tài khoản ngay, hay bản đầu ẩn danh có TTL?
+## Câu hỏi đã được người dùng trả lời (đã chốt)
+1. Độ phân giải mục tiêu phục chế ảnh cũ: Full HD 4K ✅
+2. Provider chỉnh sửa chính: ưu tiên chất lượng ✅
+3. Triển khai: tự host CPU ✅
+4. Giao diện: ko cần đăng nhập ✅
 
 ## Phiên bản model đang dùng
 - mock:v1 (P0, chưa chọn provider thật)

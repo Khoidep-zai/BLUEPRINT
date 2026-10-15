@@ -1,0 +1,14 @@
+id: remove_watermark
+version: 1
+name_vi: Xóa watermark
+name_en: Remove Watermark
+steps:
+  - detect: { text_logo: true }
+  - edit:   { provider: mock, strength: 0.6, padding: 0.25, prompt_id: remove_watermark }
+  - blend:  { method: feather, radius_px: 8 }
+  - qa:
+      ocr_recheck: true
+      outside_mask_ssim_min: 0.98
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/remove_watermark.vi.md, en: prompts/remove_watermark.en.md }
+ownership_required: true

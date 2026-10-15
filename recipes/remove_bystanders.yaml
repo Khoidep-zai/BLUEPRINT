@@ -1,0 +1,13 @@
+id: remove_bystanders
+version: 1
+name_vi: Xóa người hậu cảnh
+name_en: Remove Bystanders
+steps:
+  - detect: { person: true }
+  - edit:   { provider: mock, strength: 0.5, padding: 0.3, prompt_id: remove_bystanders }
+  - blend:  { method: feather, radius_px: 10 }
+  - qa:
+      person_recheck: true
+      outside_mask_ssim_min: 0.98
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/remove_bystanders.vi.md, en: prompts/remove_bystanders.en.md }

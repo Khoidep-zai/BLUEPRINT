@@ -1,0 +1,12 @@
+id: product_studio
+version: 1
+name_vi: Điện thoại → Studio
+name_en: Phone to Studio
+steps:
+  - detect: { person: false, faces: false }
+  - edit:   { provider: mock, strength: 0.6, padding: 0.0, prompt_id: product_studio }
+  - blend:  { method: feather, radius_px: 8 }
+  - qa:
+      outside_mask_ssim_min: 0.95
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/product_studio.vi.md, en: prompts/product_studio.en.md }

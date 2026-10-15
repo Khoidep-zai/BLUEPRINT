@@ -1,0 +1,14 @@
+id: golden_hour
+version: 1
+name_vi: Chân dung giờ vàng
+name_en: Golden Hour Portrait
+steps:
+  - detect: { faces: true }
+  - edit:   { provider: mock, strength: 0.4, padding: 0.0, prompt_id: golden_hour }
+  - blend:  { method: feather, radius_px: 6 }
+  - qa:
+      delta_e_skin_max: 4.0
+      clip_ratio_max: 0.01
+      identity_cosine_min: 0.88
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/golden_hour.vi.md, en: prompts/golden_hour.en.md }

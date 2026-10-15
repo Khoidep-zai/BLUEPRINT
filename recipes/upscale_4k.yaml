@@ -1,0 +1,17 @@
+id: upscale_4k
+version: 1
+name_vi: Nâng cấp 4K
+name_en: 4K Upscale
+steps:
+  - detect: { faces: true }
+  - edit:   { provider: mock, strength: 0.3, padding: 0.0, prompt_id: upscale_4k }
+  - blend:  { method: feather, radius_px: 4 }
+  - qa:
+      identity_cosine_min: 0.90
+      outside_mask_ssim_min: 0.98
+      clip_ratio_max: 0.01
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/upscale_4k.vi.md, en: prompts/upscale_4k.en.md }
+qa_thresholds:
+  max_output_edge_px: 8192
+  upscale_factor: 4

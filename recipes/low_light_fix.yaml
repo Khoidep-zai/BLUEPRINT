@@ -1,0 +1,13 @@
+id: low_light_fix
+version: 1
+name_vi: Sửa ảnh thiếu sáng
+name_en: Low Light Fix
+steps:
+  - detect: { faces: true }
+  - edit:   { provider: mock, strength: 0.5, padding: 0.0, prompt_id: low_light_fix }
+  - blend:  { method: feather, radius_px: 6 }
+  - qa:
+      clip_ratio_max: 0.01
+      delta_e_skin_max: 4.0
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/low_light_fix.vi.md, en: prompts/low_light_fix.en.md }

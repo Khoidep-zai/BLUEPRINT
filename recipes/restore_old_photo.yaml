@@ -1,0 +1,16 @@
+id: restore_old_photo
+version: 1
+name_vi: Phục chế ảnh cũ
+name_en: Restore Old Photo
+steps:
+  - detect: { faces: true }
+  - edit:   { provider: mock, strength: 0.5, padding: 0.0, prompt_id: restore_old_photo }
+  - blend:  { method: feather, radius_px: 6 }
+  - qa:
+      identity_cosine_min: 0.85
+      clip_ratio_max: 0.01
+retry: { max: 2, strength_step: -0.1, reseed: true }
+prompt: { vi: prompts/restore_old_photo.vi.md, en: prompts/restore_old_photo.en.md }
+qa_thresholds:
+  target_resolution: "Full HD 4K"
+  colorize_optional: true
