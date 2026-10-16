@@ -2,16 +2,15 @@ id: skin_retouch
 version: 1
 name_vi: Retouch da
 name_en: Skin Retouch
+ownership_required: false
 steps:
-  - detect: { faces: true, eyes_ear: true }
-  - edit:   { provider: mock, strength: 0.4, padding: 0.2, prompt_id: skin_retouch }
+  - detect: { faces: true, eyes_gaze: true }
+  - edit:   { editor: skin, strength: 0.4, padding: 0.2, scale: 1.0 }
   - blend:  { method: feather, radius_px: 6 }
   - qa:
       identity_cosine_min: 0.90
       delta_e_skin_max: 3.0
+      texture_variance_min: 5.0
       outside_mask_ssim_min: 0.98
 retry: { max: 2, strength_step: -0.1, reseed: true }
 prompt: { vi: prompts/skin_retouch.vi.md, en: prompts/skin_retouch.en.md }
-qa_thresholds:
-  texture_variance_min: 0.30
-  upscale_factor: 3

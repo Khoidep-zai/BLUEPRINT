@@ -24,9 +24,16 @@ Desktop.ini
 .vscode/
 .idea/
 
-# Node (frontend có thể chuyển sang Next.js sau này)
-node_modules/
-.next/
+# Local workspace (jobs, results, SQLite) lives under ~/.photo-ai-desktop by
+# default; ignore it here too in case PHOTOAI_WORKSPACE points into the repo.
+.photo-ai-desktop/
+workspace/
+*.db
 
-# Golden-set images: deterministic, regenerate with `python tests/golden/generate.py`
-tests/golden/*/images/
+# Model weights are downloaded/placed locally, never committed.
+models_weights/*
+!models_weights/.gitkeep
+*.pth
+*.safetensors
+*.onnx
+*.ckpt

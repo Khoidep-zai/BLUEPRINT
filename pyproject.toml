@@ -3,12 +3,25 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "photo-ai-tool"
-version = "0.1.0"
-description = "Photo AI Tool with recipe-driven pipeline"
+name = "photo-ai-desktop"
+version = "0.2.0"
+description = "Photo AI Desktop — 100% local GPU photo editing (PySide6 + recipe pipeline)"
 requires-python = ">=3.10"
+dependencies = [
+    "PySide6>=6.6.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "pyyaml>=6.0.1",
+    "pillow>=10.1.0",
+    "numpy>=1.26.0",
+]
+
+[project.optional-dependencies]
+# Optional accelerators. The app runs on CPU without any of them.
+gpu = ["torch>=2.1.0", "opencv-python-headless>=4.8.0"]
+dev = ["pytest>=7.4.0", "pytest-cov>=4.1.0", "black>=23.0.0", "ruff>=0.1.0", "mypy>=1.7.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src/backend", "workers/src", "."]
+pythonpath = ["src", "."]
 addopts = "-v"

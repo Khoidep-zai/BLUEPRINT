@@ -2,15 +2,13 @@ id: chin_fix
 version: 1
 name_vi: Sửa nọng cằm
 name_en: Chin Fix
+ownership_required: false
 steps:
-  - detect: { faces: true, eyes_ear: true }
-  - edit:   { provider: mock, strength: 0.25, padding: 0.35, prompt_id: chin_fix }
+  - detect: { faces: true, eyes_gaze: true }
+  - edit:   { editor: geometry, strength: 0.25, padding: 0.35 }
   - blend:  { method: feather, radius_px: 8 }
   - qa:
       identity_cosine_min: 0.92
       outside_mask_ssim_min: 0.99
 retry: { max: 2, strength_step: -0.05, reseed: true }
 prompt: { vi: prompts/chin_fix.vi.md, en: prompts/chin_fix.en.md }
-qa_thresholds:
-  max_strength: 0.3
-  face_structure_lock: true

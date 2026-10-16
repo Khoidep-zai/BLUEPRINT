@@ -2,9 +2,10 @@ id: remove_bystanders
 version: 1
 name_vi: Xóa người hậu cảnh
 name_en: Remove Bystanders
+ownership_required: false
 steps:
-  - detect: { person: true }
-  - edit:   { provider: mock, strength: 0.5, padding: 0.3, prompt_id: remove_bystanders }
+  - detect: { persons: true }
+  - edit:   { editor: bystanders, strength: 0.5, padding: 0.3 }
   - blend:  { method: feather, radius_px: 10 }
   - qa:
       person_recheck: true

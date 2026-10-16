@@ -2,14 +2,15 @@ id: open_eyes
 version: 1
 name_vi: Cứu ảnh nhắm mắt
 name_en: Open Eyes Rescue
+ownership_required: false
 steps:
-  - detect: { faces: true, eyes_ear: true }
-  - filter: { only_closed_eyes: true, ear_below: 0.2 }
-  - edit:   { provider: mock, strength: 0.4, padding: 0.25, prompt_id: open_eyes }
-  - blend:  { method: feather, radius_px: 6 }
+  - detect: { faces: true, eyes_gaze: true }
+  - filter: { only_closed_eyes: true, ear_below: 0.20 }
+  - edit:   { editor: eyes, strength: 0.4, padding: 0.3 }
+  - blend:  { method: poisson, radius_px: 6 }
   - qa:
-      ear_min: 0.20
+      ear_min: 0.22
       identity_cosine_min: 0.88
-      outside_mask_ssim_min: 0.98
+      outside_mask_ssim_min: 0.995
 retry: { max: 2, strength_step: -0.1, reseed: true }
 prompt: { vi: prompts/open_eyes.vi.md, en: prompts/open_eyes.en.md }

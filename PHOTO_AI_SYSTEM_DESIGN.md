@@ -1,389 +1,404 @@
-# Photo AI Tool — Bản vẽ hệ thống chi tiết
+# PHOTO AI DESKTOP APP — BẢN VẼ HỆ THỐNG & HƯỚNG DẪN CHO AI AGENT (LOCAL GPU EDITION)
 
-*Tài liệu bổ sung cho `AGENT_SKILLS.md`. Gồm: kiến trúc, cấu trúc `src`, ERD, use case, API contract, test plan, checklist bảo mật, mẫu báo cáo và lộ trình từng bước.*
+> **Mục tiêu cho AI Agent:** Tài liệu này là đặc tả kỹ thuật chuẩn (Single Source of Truth) để xây dựng ứng dụng **Photo AI Desktop App** bằng Python, sử dụng **100% Local GPU (CUDA/MPS)**, giao diện **PySide6 (Qt6)**, không phụ thuộc vào Web Server, Redis hay Cloud API bên ngoài.
 
-> **Lưu ý:** file `BLUEPRINT.md` gốc chưa được gửi kèm nên 10 chức năng được suy ra từ ma trận §5 của `AGENT_SKILLS.md`. Nếu BLUEPRINT có ngưỡng QA khác, hãy ưu tiên BLUEPRINT và sửa lại các ngưỡng bên dưới.
+---
 
-## 1. Phạm vi & nguyên tắc
+## 1. Kiến Trúc Tổng Thể & Nguyên Tắc Cốt Lõi
 
-| # | ID recipe | Chức năng | QA chính |
-|---|---|---|---|
-| 1 | `upscale_4k` | Nâng cấp 4K | identity, structure_similarity |
-| 2 | `skin_retouch` | Retouch da | identity, delta_e_skin, texture_variance |
-| 3 | `chin_fix` | Sửa nọng cằm | identity, outside_mask_ssim |
-| 4 | `open_eyes` | Cứu ảnh nhắm mắt | ear, identity, outside_mask_ssim |
-| 5 | `remove_watermark` | Xóa watermark | ocr_recheck, outside_mask_ssim |
-| 6 | `remove_bystanders` | Xóa người hậu cảnh | person_recheck, outside_mask_ssim |
-| 7 | `restore_old_photo` | Phục chế ảnh cũ | identity, structure_similarity, clip_ratio |
-| 8 | `golden_hour` | Chân dung giờ vàng | delta_e_skin, clip_ratio, identity |
-| 9 | `low_light_fix` | Sửa ảnh thiếu sáng | clip_ratio, delta_e_skin |
-| 10 | `product_studio` | Điện thoại → Studio | shape/logo similarity, color_shift |
+### 1.1 Sơ đồ kiến trúc (Local Desktop MVVM + GPU Pipeline)
 
-**Nguyên tắc cốt lõi (rút từ AGENT_SKILLS §2):** không ghi đè ảnh gốc; ràng buộc prompt không bị làm yếu; mọi chức năng có QA bằng số; recipe-driven; provider adapter; riêng tư và TTL; watermark cần `ownership_confirmed` + audit log.
-
-## 2. Kiến trúc hệ thống
-
-### 2.1 Sơ đồ tổng thể
-
-```
-┌──────────────┐  HTTPS   ┌───────────────┐   enqueue   ┌────────────┐
-│ Web (PWA)    │ ───────▶ │ API (FastAPI) │ ──────────▶ │ Redis/Queue│
-│ Next.js      │ ◀─WS──── │ auth, jobs    │             └─────┬──────┘
-└──────┬───────┘          └───┬───────┬───┘                   │ pull
-       │ presigned PUT        │       │ SQL                   ▼
-       ▼                      │       ▼              ┌────────────────────┐
-┌──────────────┐ read/write   │  ┌──────────┐        │ Worker (GPU/CPU)   │
-│ Object Store │◀─────────────┘  │ Postgres │◀───────│ Recipe Runner      │
-│ (S3/MinIO)   │◀────────────────┴──────────┘ status │ detect→filter→edit │
-│ originals/   │                                      │ →blend→qa          │
-│ results/     │                                      └───┬─────────┬──────┘
-└──────────────┘                                          │         │
-                                              ┌───────────▼──┐  ┌───▼──────────┐
-                                              │ Providers/   │  │ QA modules   │
-                                              │ mock | real  │  │ identity,ssim│
-                                              └──────────────┘  └──────────────┘
+```text
+┌──────────────────────────────────────────────────────────────────────────┐
+│                     DESKTOP UI LAYER (PySide6 / Qt6)                     │
+│  ┌────────────┐  ┌──────────────────────┐  ┌──────────┐  ┌────────────┐  │
+│  │ ToolGrid   │  │ InteractiveCanvas    │  │ QaPanel  │  │ BeforeAfter│  │
+│  │ (10 Tools) │  │ (Mask/Point/Zoom 4K) │  │ (Metrics)│  │ Slider     │  │
+│  └─────┬──────┘  └──────────┬───────────┘  └────▲─────┘  └─────▲──────┘  │
+└────────┼────────────────────┼───────────────────┼──────────────┼─────────┘
+         │ Qt Signal (JobReq) │                   │ Qt Signal    │
+         ▼                    ▼                   │ (Progress/QA)│
+┌─────────────────────────────────────────────────┴──────────────┴─────────┐
+│                APPLICATION CONTROLLER & QTHREAD WORKER                   │
+│  ┌───────────────────────┐   ┌────────────────────────────────────────┐  │
+│  │ LocalWorkspaceManager │   │ RecipeRunner (7-Stage Hybrid Pipeline) │  │
+│  │ - SQLite (Jobs/Audit) │   │ 1.Ingest ─▶ 2.Detect ─▶ 3.ROI/Mask     │  │
+│  │ - File Cache (TTL)    │   │ 7.Export ◀─ 6.AutoQA ◀─ 5.Blend ◀─ 4.AI│  │
+│  └───────────────────────┘   └────────────────────┬───────────────────┘  │
+└───────────────────────────────────────────────────┼──────────────────────┘
+                                                    │
+         ┌──────────────────────────────────────────┴───────────┐
+         ▼                                                      ▼
+┌─────────────────────────────────────┐  ┌─────────────────────────────────┐
+│     VRAM MODEL MANAGER (GPU)        │  │   CLASSICAL CV ENGINE (CPU/GPU) │
+│ - PyTorch FP16 /BF16, CUDA Streams  │  │ - Frequency Separation (Da thật)│
+│ - Auto Load / Offload + EmptyCache  │  │ - TPS Geometry Warp (Góc mặt)   │
+│ - Models: RealESRGAN, BiSeNet, LaMa,│  │ - Histogram/LAB Color Transfer  │
+│   CodeFormer, IC-Light, SDXL-Inpaint│  │ - Studio Shadow & Reflection    │
+└─────────────────────────────────────┘  └─────────────────────────────────┘
 ```
 
-### 2.2 Luồng một job
+### 1.2 Nguyên tắc bất biến khi Agent viết code
+1. **100% Offline & Local GPU:** Mọi tác vụ suy luận chạy trên GPU cục bộ qua PyTorch (`cuda` hoặc `mps`). Không gọi HTTP API ra ngoài.
+2. **Bảo toàn ảnh gốc (Original Immutability):** Ảnh gốc khi nạp vào RAM phải khóa quyền ghi (`img.flags.writeable = False`). Mọi kết quả lưu ra thư mục `workspace/results/`.
+3. **Quản lý VRAM nghiêm ngặt:** Không bao giờ nạp toàn bộ model cùng lúc. Phải thông qua `VRAMModelManager` để nạp theo nhu cầu (On-demand Loading) và giải phóng VRAM ngay khi qua bước tiếp theo.
+4. **Không khóa giao diện (Non-blocking UI):** Toàn bộ `RecipeRunner` bắt buộc chạy trong `QThread` hoặc `QRunnable`. Giao tiếp với UI chỉ dùng `QtCore.Signal`.
+5. **Chống ảo giác bằng Hybrid CV + AI:** Luôn dùng thuật toán thị giác máy tính (OpenCV/NumPy) để khóa vùng Mask, tách tần số giữ lỗ chân lông và ghép vùng sửa (ROI Paste-back).
+6. **QA Định lượng & Tự động Fallback:** Mọi chức năng đều phải qua bước chấm điểm QA bằng số. Nếu sau 2 lần retry trên GPU vẫn trượt QA (ví dụ làm lệch nhận dạng mặt), tự động trả về kết quả từ nhánh thuật toán Classical CV an toàn.
 
-1. Client xin presigned URL → upload ảnh gốc lên `originals/` (chỉ đọc).
-2. Client gọi `POST /v1/jobs` với `recipe_id`, `asset_id`, tham số.
-3. API validate, ghi `jobs(status=queued)`, đẩy vào queue.
-4. Worker lấy job → `running`: detect → filter → edit → blend.
-5. Chuyển `qa`: chạy các đo lường, ghi `qa_reports`.
-6. Fail QA → retry tối đa 2 lần (giảm strength, đổi seed); vẫn fail → trả bản tốt nhất kèm `warnings`.
-7. `done` → kết quả lưu `results/`; client nhận qua WebSocket/polling; TTL tự xóa.
+---
 
-### 2.3 Quyết định kiến trúc (ADR rút gọn)
+## 2. Cấu Trúc Thư Mục `src` Chuẩn Hóa (Clean & Modular)
 
-| ADR | Quyết định | Lý do |
-|---|---|---|
-| 001 | Modular monolith + worker tách riêng | Đơn giản giai đoạn đầu, GPU scale độc lập |
-| 002 | Recipe YAML + Pydantic schema | Thêm chức năng không sửa lõi |
-| 003 | Provider adapter duy nhất cho SDK ngoài | Đổi nhà cung cấp bằng cấu hình |
-| 004 | Postgres + S3 + Redis | Chuẩn, dễ vận hành |
-| 005 | Job idempotent (khóa `idempotency_key`) | Retry an toàn |
-
-## 3. Cấu trúc `src` chi tiết
-
-```
-photo-ai/
-├─ apps/
-│  ├─ api/
-│  │  ├─ src/photoai_api/
-│  │  │  ├─ main.py                 # tạo app FastAPI
-│  │  │  ├─ config.py               # đọc env, không hard-code secret
-│  │  │  ├─ deps.py                 # db session, auth, rate limit
-│  │  │  ├─ routers/
-│  │  │  │  ├─ uploads.py  jobs.py  assets.py  recipes.py  feedback.py  health.py
-│  │  │  ├─ schemas/                # Pydantic request/response
-│  │  │  ├─ services/               # job_service, asset_service, audit_service
-│  │  │  ├─ models/                 # SQLAlchemy (khớp ERD)
-│  │  │  ├─ repositories/
-│  │  │  ├─ security/               # auth, validators, upload_guard
-│  │  │  └─ errors.py               # mã lỗi chuẩn
-│  │  ├─ migrations/                # Alembic
-│  │  └─ tests/
-│  └─ web/
-│     └─ src/
-│        ├─ app/                    # routes: /, /tool/[id], /job/[id]
-│        ├─ components/
-│        │  ├─ ToolGrid  Uploader  MaskCanvas  SubjectPicker
-│        │  ├─ BeforeAfterSlider  QaPanel  JobProgress
-│        ├─ lib/                    # api-client, ws-client, image-utils
-│        ├─ hooks/                  # useJob, useUpload
-│        └─ e2e/                    # Playwright
-├─ workers/
-│  ├─ src/photoai_worker/
-│  │  ├─ main.py                    # consumer queue
-│  │  ├─ pipeline/
-│  │  │  ├─ recipe_schema.py  runner.py  context.py  retry.py
-│  │  │  └─ steps/ detect.py filter.py edit.py blend.py qa.py
-│  │  ├─ detectors/   face.py  eyes_ear.py  person.py  text_logo.py
-│  │  ├─ editors/     upscale.py  inpaint.py  relight.py  color.py  retouch.py  restore.py  studio.py
-│  │  ├─ qa/          identity.py  ssim.py  lpips.py  ocr_recheck.py  person_recheck.py  skin_color.py  clip_ratio.py  report.py
-│  │  └─ io/          storage.py  image_codec.py
-│  └─ tests/
-├─ providers/
-│  ├─ base.py                       # ImageEditProvider.edit(image, mask?, prompt, strength, seed)
-│  ├─ mock.py
-│  ├─ <provider_thật>.py
-│  └─ registry.py                   # chọn provider theo cấu hình
-├─ recipes/        # 10 file YAML, mỗi file có ngưỡng QA
-├─ prompts/        # <id>.vi.md  <id>.en.md
-├─ tests/
-│  ├─ golden/<recipe_id>/ images/ expected.json
-│  ├─ unit/  integration/  e2e/  perf/  security/
-├─ docs/
-│  ├─ architecture.md  erd.md  api-contract.md  usecases.md
-│  ├─ test-plan.md  security-checklist.md  adr/  reports/
-├─ infra/  docker-compose.yml  Dockerfile.*  k8s/  ci/
-├─ AGENT_SKILLS.md  BLUEPRINT.md  PROGRESS.md
-```
-
-**Quy tắc phụ thuộc:** `routers → services → repositories`; `worker steps → detectors/editors/qa → providers`. Không import ngược. Chỉ `providers/` được import SDK ngoài.
-
-## 4. ERD (cơ sở dữ liệu)
-
-```
-users 1───* assets 1───* jobs 1───* job_steps
-  │                       │ 1───* qa_reports
-  │                       │ 1───* provider_calls
-  │ 1───* audit_logs ─────┘ (job_id, nullable)
-  └──* feedback *──1 jobs
-recipes_registry 1───* jobs
+```text
+photo-ai-desktop/
+├─ pyproject.toml                    # Quản lý dependencies (PySide6, torch, opencv, pydantic...)
+├─ main.py                           # Điểm khởi chạy ứng dụng Desktop
+├─ assets/                           # Icons, QSS stylesheet (Dark theme chuyên nghiệp)
+├─ models_weights/                   # Thư mục chứa weights (.pth, .safetensors, .onnx)
+├─ recipes/                          # 10 file YAML cấu hình thông số & ngưỡng QA cho 10 chức năng
+├─ prompts/                          # 10 file prompt gốc (.vi.md / .en.md)
+├─ src/
+│  └─ photoai/
+│     ├─ config.py                   # Cấu hình đường dẫn, giới hạn VRAM, thiết bị (cuda/cpu)
+│     ├─ errors.py                   # Các ngoại lệ chuẩn (NoFaceDetectedError, OwnershipError...)
+│     │
+│     ├─ ui/                         # TẦNG GIAO DIỆN DESKTOP (PySide6)
+│     │  ├─ main_window.py           # Cửa sổ chính (Sidebar 10 công cụ + Canvas + QA Dock)
+│     │  ├─ workers_qt.py            # QThread bọc RecipeRunner, phát Signal tiến độ về UI
+│     │  ├─ widgets/
+│     │  │  ├─ tool_selector.py      # Danh sách 10 chức năng
+│     │  │  ├─ interactive_canvas.py # Vẽ Mask, chấm chọn chủ thể, Zoom/Pan 4K
+│     │  │  ├─ before_after_view.py  # Thanh trượt so sánh Trước / Sau trực quan
+│     │  │  ├─ qa_panel.py           # Hiển thị các chỉ số QA (Identity, SSIM, EAR...)
+│     │  │  └─ watermark_dialog.py   # Hộp thoại bắt buộc tick xác nhận quyền sở hữu
+│     │
+│     ├─ storage/                    # TẦNG DỮ LIỆU CỤC BỘ
+│     │  ├─ db.py                    # SQLite (SQLAlchemy): bảng jobs, qa_reports, audit_logs
+│     │  ├─ workspace.py             # Quản lý đọc/ghi ảnh tạm, xóa EXIF, dọn rác TTL
+│     │  └─ image_codec.py           # Đọc/ghi ảnh 8-bit/16-bit, chuẩn hóa EXIF orientation
+│     │
+│     ├─ engine/                     # TẦNG ĐIỀU PHỐI PIPELINE & QUẢN LÝ GPU
+│     │  ├─ vram_manager.py          # Nạp/giải phóng model trên VRAM (Singleton + LRU)
+│     │  ├─ context.py               # PipelineContext chứa ảnh gốc, masks, HF layer, ROIs
+│     │  ├─ recipe_schema.py         # Pydantic schema đọc và kiểm tra file recipes/*.yaml
+│     │  ├─ runner.py                # Điều phối luồng 7 bước + cơ chế Retry/Fallback
+│     │  └─ steps/
+│     │     ├─ s1_ingest.py          # Chuẩn hóa hệ màu RGB, lưu kích thước gốc
+│     │     ├─ s2_detect.py          # Gọi các detectors theo cấu hình YAML
+│     │     ├─ s3_roi_mask.py        # Cắt vùng ROI, tạo mask feather, tách tần số cao
+│     │     ├─ s4_edit.py            # Thực thi chuỗi xử lý Hybrid (CV + GPU Models)
+│     │     ├─ s5_blend.py           # Ghép ROI, trộn Frequency, Poisson/Feather blend
+│     │     ├─ s6_qa.py              # Đo lường chất lượng đầu ra & quyết định Retry
+│     │     └─ s7_export.py          # Xuất file thành phẩm & lưu SQLite
+│     │
+│     ├─ detectors/                  # CÁC MODULE NHẬN DIỆN (Chạy trên GPU)
+│     │  ├─ face_analyzer.py         # InsightFace/RetinaFace (BBox, 5/68/468 Landmarks, ArcFace)
+│     │  ├─ face_parsing.py          # BiSeNet (Tách 19 vùng mặt: da, mắt, mũi, môi, tóc, râu)
+│     │  ├─ eyes_gaze.py             # Tính chỉ số mở mắt EAR & vector hướng nhìn
+│     │  ├─ person_depth.py          # YOLOv8-seg + Depth-Anything-V2 (Tách người & chiều sâu)
+│     │  ├─ product_matting.py       # BiRefNet / MODNet (Tách nền sản phẩm & sợi tóc siêu nét)
+│     │  └─ ocr_damage.py            # PaddleOCR (Watermark/Logo) + Detector vết xước ảnh cũ
+│     │
+│     ├─ processors/                 # CÁC THUẬT TOÁN XỬ LÝ CHÍNH (CV + AI)
+│     │  ├─ cv_ops/                  # Thuật toán Toán học / OpenCV thuần (Không ảo giác)
+│     │  │  ├─ frequency_sep.py      # Tách/ghép tần số cao-thấp (Bảo vệ lỗ chân lông)
+│     │  │  ├─ geometry_tps.py       # Thin-Plate Spline (Chỉnh góc mặt/nọng cằm tinh tế)
+│     │  │  ├─ color_lighting.py     # Gray-World WB, LAB Histogram Match, CLAHE, Film Grain
+│     │  │  └─ studio_physics.py     # Dựng bóng đổ tiếp xúc & phản chiếu gương cho sản phẩm
+│     │  └─ ai_wrappers/             # Các trình bọc Model PyTorch chạy GPU
+│     │     ├─ upscaler_gpu.py       # Real-ESRGAN / SwinIR (Chia Tiled chống tràn VRAM)
+│     │     ├─ inpainter_gpu.py      # LaMa (Xóa vật thể/mụn) & SDXL/Flux ControlNet Inpaint
+│     │     ├─ face_restorer_gpu.py  # CodeFormer (Khôi phục mặt ảnh cũ với fidelity cao)
+│     │     └─ relighter_gpu.py      # IC-Light (Đổi nắng Giờ vàng, Studio, Xóa bóng Flash)
+│     │
+│     └─ qa/                         # ĐO LƯỜNG CHẤT LƯỢNG TỰ ĐỘNG
+│        ├─ metrics.py               # Tính Identity Cosine, SSIM, EAR, Delta-E, Clip Ratio, Texture Variance
+│        └─ evaluator.py             # So khớp với ngưỡng trong YAML và tạo QA Report
+└─ tests/
+   ├─ unit/                          # Test từng thuật toán CV, QA metrics, VRAM manager
+   └─ golden/                        # Bộ ảnh test chuẩn cho 10 chức năng
 ```
 
-| Bảng | Cột chính | Ghi chú |
-|---|---|---|
-| `users` | id PK, email UK, role, created_at, deleted_at | Có thể ẩn danh ở bản đầu |
-| `assets` | id PK, user_id FK, kind (original/result/mask), storage_key, mime, width, height, sha256, expires_at | `original` bất biến |
-| `recipes_registry` | id PK (recipe_id), version, yaml_hash, active | Đồng bộ từ `recipes/` |
-| `jobs` | id PK, user_id FK, recipe_id FK, input_asset_id FK, mask_asset_id FK null, params JSONB, status, idempotency_key UK, ownership_confirmed bool, result_asset_id FK null, warnings JSONB, created_at, finished_at | status: queued/running/qa/done/failed |
-| `job_steps` | id PK, job_id FK, name, status, attempt, started_at, ended_at, error_code | detect/filter/edit/blend/qa |
-| `qa_reports` | id PK, job_id FK, attempt, metrics JSONB, thresholds JSONB, passed bool | Mỗi lần retry một dòng |
-| `provider_calls` | id PK, job_id FK, provider, model_version, seed, strength, latency_ms, cost_usd | Phục vụ đo chi phí/độ trễ |
-| `audit_logs` | id PK, user_id, job_id null, action, detail JSONB, ip_hash, created_at | Bắt buộc với `remove_watermark` |
-| `feedback` | id PK, job_id FK, rating, comment | Không chứa ảnh |
+---
 
-**Chỉ mục:** `jobs(user_id, created_at)`, `jobs(status)`, `assets(expires_at)`, `qa_reports(job_id)`.
-**Ràng buộc:** `jobs.ownership_confirmed = true` khi `recipe_id = remove_watermark` (CHECK ở tầng service + test).
+## 3. Thiết Kế Mã Nguồn Lõi & Các Thuật Toán Trọng Tâm
 
-## 5. Use case
+AI Agent cần hiện thực hóa chính xác các đoạn mã và thuật toán cốt lõi dưới đây trong `src/photoai/`:
 
-| UC | Tác nhân | Luồng chính | Ngoại lệ |
-|---|---|---|---|
-| UC1 Chọn chức năng & upload | Người dùng | Mở lưới 10 chức năng → chọn → upload | File sai định dạng/quá lớn → báo lỗi rõ |
-| UC2 Chạy chỉnh ảnh | Người dùng | Gửi job → xem tiến độ → xem trước/sau | Không thấy mặt/mắt nhắm → thông báo, không crash |
-| UC3 Chạm chọn chủ thể / tô mask | Người dùng | Chạm chủ thể chính hoặc tô vùng cần sửa | Mask quá nhỏ → gợi ý |
-| UC4 Xóa watermark | Người dùng | Tick xác nhận quyền sở hữu → chạy → audit log | Không tick → từ chối |
-| UC5 Xem QA | Người dùng | Panel QA dễ hiểu (đạt/cảnh báo) | QA fail → nhận bản tốt nhất + cảnh báo |
-| UC6 Tải/xóa ảnh | Người dùng | Tải kết quả; xóa sớm trước TTL | — |
-| UC7 Thêm chức năng/recipe | Dev/Agent | Thêm YAML + prompt + golden + QA | CI chặn nếu QA giảm |
-| UC8 Giám sát | Vận hành | Xem queue, lỗi, chi phí/job | — |
+### 3.1 Bộ quản lý bộ nhớ GPU (`src/photoai/engine/vram_manager.py`)
+Giúp ứng dụng chạy mượt trên cả các GPU tầm trung (8GB - 12GB VRAM) mà không bao giờ bị lỗi `CUDA Out of Memory`:
 
-## 6. API contract (v1)
+```python
+import gc
+import torch
+from typing import Callable, Dict, Any
 
-Quy ước: JSON, `Authorization: Bearer <token>`, thời gian ISO-8601 UTC, lỗi theo mẫu chung.
+class VRAMModelManager:
+    """Quản lý vòng đời Model trên GPU: Tự động nạp FP16 và giải phóng VRAM."""
+    _instance = None
 
-| Method | Đường dẫn | Mô tả |
-|---|---|---|
-| POST | `/v1/uploads/presign` | Body `{filename, mime, size}` → `{asset_id, upload_url, expires_in}` |
-| POST | `/v1/assets/{id}/complete` | Xác nhận upload xong, server kiểm tra magic bytes, kích thước |
-| GET | `/v1/recipes` | Danh sách chức năng + tham số cho phép |
-| POST | `/v1/jobs` | Tạo job (header `Idempotency-Key`) |
-| GET | `/v1/jobs/{id}` | Trạng thái, `qa_report`, `warnings` |
-| GET | `/v1/jobs/{id}/result` | URL tải kết quả (presigned, ngắn hạn) |
-| POST | `/v1/jobs/{id}/retry` | Chạy lại với tham số mới |
-| WS | `/v1/jobs/{id}/events` | Đẩy trạng thái `queued/running/qa/done/failed` |
-| DELETE | `/v1/assets/{id}` | Xóa sớm |
-| POST | `/v1/feedback` | `{job_id, rating, comment}` |
-| GET | `/healthz` | Kiểm tra sống |
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            cls._instance.dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+            cls._instance.loaded_models: Dict[str, Any] = {}
+            cls._instance.max_active_models = 2
+        return cls._instance
 
-**Tạo job — request**
+    def get_model(self, model_key: str, loader_fn: Callable[[], Any]) -> Any:
+        if model_key in self.loaded_models:
+            return self.loaded_models[model_key]
 
-```json
-{
-  "recipe_id": "open_eyes",
-  "input_asset_id": "ast_123",
-  "mask_asset_id": null,
-  "params": { "subject_point": [0.52, 0.41], "strength": 0.5, "seed": 42 },
-  "ownership_confirmed": false
-}
+        # Nếu vượt số lượng model cho phép trên VRAM, giải phóng model cũ nhất
+        if len(self.loaded_models) >= self.max_active_models:
+            oldest_key = next(iter(self.loaded_models))
+            self.offload_model(oldest_key)
+
+        model = loader_fn()
+        if hasattr(model, "to"):
+            model = model.to(device=self.device, dtype=self.dtype)
+        if hasattr(model, "eval"):
+            model.eval()
+
+        self.loaded_models[model_key] = model
+        return model
+
+    def offload_model(self, model_key: str) -> None:
+        if model_key in self.loaded_models:
+            model = self.loaded_models.pop(model_key)
+            if hasattr(model, "to"):
+                model.to("cpu")
+            del model
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+
+    def clear_all(self) -> None:
+        for key in list(self.loaded_models.keys()):
+            self.offload_model(key)
 ```
 
-**Response 202**
+### 3.2 Thuật toán 1: Tách & Tái tạo Tần Số Da (`src/photoai/processors/cv_ops/frequency_sep.py`)
+Giải quyết triệt để bài toán **"Không da nhựa, giữ nguyên lỗ chân lông và kết cấu gốc"** ở chức năng 1, 2, 8, 9:
 
-```json
-{ "job_id": "job_456", "status": "queued", "created_at": "2026-10-16T08:00:00Z" }
+```python
+import cv2
+import numpy as np
+
+class FrequencySeparator:
+    @staticmethod
+    def decompose(img_rgb: np.ndarray, sigma: float = 3.0) -> tuple[np.ndarray, np.ndarray]:
+        """
+        Tách ảnh RGB [0..255] thành:
+        - low_freq (float32 [0..1]): Chứa sắc độ, màu da và vùng chuyển sáng.
+        - high_freq (float32 [-1..1]): Chứa lỗ chân lông, sợi tóc, kết cấu vải.
+        """
+        img_f = img_rgb.astype(np.float32) / 255.0
+        ksize = int(2 * round(3 * sigma) + 1)
+        low_freq = cv2.GaussianBlur(img_f, (ksize, ksize), sigma)
+        high_freq = img_f - low_freq
+        return low_freq, high_freq
+
+    @staticmethod
+    def smooth_low_frequency(low_freq: np.ndarray, diameter: int = 9, sigma_color: float = 0.08, sigma_space: float = 9.0) -> np.ndarray:
+        """Làm mịn thông minh lớp màu sắc/ánh sáng bằng Bilateral Filter (giữ cạnh khuôn mặt)."""
+        return cv2.bilateralFilter(low_freq, diameter, sigma_color, sigma_space)
+
+    @staticmethod
+    def recombine(
+        edited_img_rgb: np.ndarray,
+        original_high_freq: np.ndarray,
+        skin_mask: np.ndarray,
+        hf_restore_strength: float = 0.85,
+        sigma: float = 3.0
+    ) -> np.ndarray:
+        """
+        Lấy phần màu/ánh sáng đã qua xử lý AI/CV cộng với lớp lỗ chân lông gốc (original_high_freq).
+        Chỉ áp dụng bên trong vùng skin_mask (float32 [0..1]).
+        """
+        edited_low, _ = FrequencySeparator.decompose(edited_img_rgb, sigma=sigma)
+        restored = np.clip(edited_low + original_high_freq * hf_restore_strength, 0.0, 1.0)
+        
+        orig_f = edited_img_rgb.astype(np.float32) / 255.0
+        mask_3c = np.repeat(skin_mask[:, :, np.newaxis], 3, axis=2)
+        blended = orig_f * (1.0 - mask_3c) + restored * mask_3c
+        return (blended * 255.0).astype(np.uint8)
 ```
 
-**Job done — response**
+### 3.3 Thuật toán 2: Biến dạng Lưới TPS Chỉnh Góc Mặt Thấp (`src/photoai/processors/cv_ops/geometry_tps.py`)
+Dùng cho chức năng số 3 (**Sửa nọng cằm & góc máy thấp**). Thay vì để AI vẽ lại mặt gây mất nhận dạng, thuật toán dịch chuyển vi mô các điểm Landmark vùng dưới cằm/lỗ mũi khoảng $2\% - 4\%$ theo phương thẳng đứng trong khi khóa cứng mắt, hộp sọ và toàn bộ viền ảnh:
 
-```json
-{
-  "job_id": "job_456", "status": "done",
-  "result_asset_id": "ast_789",
-  "warnings": [],
-  "qa_report": {
-    "passed": true, "attempt": 1,
-    "metrics": { "ear": 0.27, "identity_cosine": 0.93, "outside_mask_ssim": 0.991 },
-    "thresholds": { "ear_min": 0.2, "identity_cosine_min": 0.85, "outside_mask_ssim_min": 0.98 }
-  }
-}
+```python
+import cv2
+import numpy as np
+
+def subtle_perspective_chin_warp(
+    img_rgb: np.ndarray,
+    landmarks_68: np.ndarray,
+    jaw_lift_ratio: float = 0.03,
+    nostril_Drop_ratio: float = 0.015
+) -> np.ndarray:
+    """
+    Mô phỏng góc máy ngang tầm mắt bằng Thin-Plate Spline (TPS):
+    - Khoá cố định (Anchor): Mắt, chân mày, sống mũi trên, và 8 điểm viền khung ảnh.
+    - Tinh chỉnh nhẹ: Nâng nhẹ đỉnh cằm/hàm dưới và hạ nhẹ cánh mũi lộ do góc chụp từ dưới lên.
+    """
+    h, w = img_rgb.shape[:2]
+    face_height = np.linalg.norm(landmarks_68[8] - landmarks_68[27])
+
+    src_pts = []
+    dst_pts = []
+
+    # 1. Khóa cứng 8 điểm biên ảnh để hậu cảnh bất biến 100%
+    border_pts = [[0,0], [w//2,0], [w-1,0], [0,h//2], [w-1,h//2], [0,h-1], [w//2,h-1], [w-1,h-1]]
+    src_pts.extend(border_pts)
+    dst_pts.extend(border_pts)
+
+    # 2. Khóa cứng vùng mắt, mày, trán (Landmarks 17..47)
+    for idx in range(17, 48):
+        pt = landmarks_68[idx].tolist()
+        src_pts.append(pt)
+        dst_pts.append(pt)
+
+    # 3. Thu gọn nhẹ đường hàm dưới & cằm (Landmarks 5..11)
+    center_face = landmarks_68[30]
+    for idx in range(5, 12):
+        pt = landmarks_68[idx].copy()
+        src_pts.append(pt.tolist())
+        # Đẩy nhẹ điểm cằm lên trên (giả lập nâng góc máy)
+        vec_to_center = center_face - pt
+        moved_pt = pt + vec_to_center * jaw_lift_ratio
+        dst_pts.append(moved_pt.tolist())
+
+    # 4. Giảm độ lộ lỗ mũi do góc thấp (Landmarks 31..35)
+    for idx in range(31, 36):
+        pt = landmarks_68[idx].copy()
+        src_pts.append(pt.tolist())
+        moved_pt = [pt[0], pt[1] + face_height * nostril_Drop_ratio]
+        dst_pts.append(moved_pt)
+
+    src_arr = np.array([src_pts], dtype=np.float32)
+    dst_arr = np.array([dst_pts], dtype=np.float32)
+
+    tps = cv2.createThinPlateSplineShapeTransformer()
+    matches = [cv2.DMatch(i, i, 0) for i in range(len(src_pts))]
+    tps.estimateTransformation(dst_arr, src_arr, matches)
+    warped = tps.warpImage(img_rgb)
+    return warped
 ```
 
-**Lỗi chuẩn**
+### 3.4 Thuật toán 3: Tạo Phản Chiếu & Bóng Đổ Studio Vật Lý (`src/photoai/processors/cv_ops/studio_physics.py`)
+Dùng cho chức năng số 10 (**Điện thoại thành Studio**). Bảo toàn 100% từng pixel của sản phẩm gốc, tự động dựng mặt bàn phản chiếu và bóng tiếp xúc mềm mại:
 
-```json
-{ "error": { "code": "NO_FACE_DETECTED", "message": "Không tìm thấy khuôn mặt.", "request_id": "req_abc" } }
+```python
+import cv2
+import numpy as np
+
+def compose_luxury_studio_product(
+    orig_rgb: np.ndarray,
+    product_alpha: np.ndarray,
+    studio_bg_rgb: np.ndarray,
+    reflection_opacity: float = 0.22,
+    shadow_strength: float = 0.65
+) -> np.ndarray:
+    """
+    Ghép sản phẩm gốc (bất biến 100%) lên nền Studio kèm:
+    1. Contact Shadow (Bóng đổ tiếp xúc dưới đáy sản phẩm).
+    2. Mirror Surface Reflection (Phản chiếu lật ngược mờ dần theo hàm mũ).
+    """
+    h, w = orig_rgb.shape[:2]
+    alpha_f = (product_alpha.astype(np.float32) / 255.0)[:, :, np.newaxis]
+
+    # Tìm tọa độ đáy thấp nhất của sản phẩm (y_bottom)
+    ys, xs = np.where(product_alpha > 128)
+    if len(ys) == 0:
+        return orig_rgb
+    y_bottom = np.max(ys)
+    x_min, x_max = np.min(xs), np.max(xs)
+
+    canvas = studio_bg_rgb.astype(np.float32)
+
+    # 1. Tạo phản chiếu bề mặt (Surface Reflection) bên dưới y_bottom
+    prod_only = orig_rgb.astype(np.float32) * alpha_f
+    flipped_prod = cv2.flip(prod_only, 0)
+    flipped_alpha = cv2.flip(alpha_f, 0)
+
+    # Dịch ảnh lật ngược xuống khớp với đáy y_bottom
+    shift_y = 2 * y_bottom - h
+    M = np.float32([[1, 0, 0], [0, 1, shift_y]])
+    refl_rgb = cv2.warpAffine(flipped_prod, M, (w, h))
+    refl_mask = cv2.warpAffine(flipped_alpha, M, (w, h))[:, :, np.newaxis]
+
+    # Làm mờ phản chiếu và tạo Gradient giảm dần từ y_bottom xuống đáy ảnh
+    refl_rgb = cv2.GaussianBlur(refl_rgb, (15, 15), 4.0)
+    grad = np.zeros((h, 1, 1), dtype=np.float32)
+    refl_height = max(1, h - y_bottom)
+    grad[y_bottom:h, 0, 0] = np.linspace(reflection_opacity, 0.0, refl_height) ** 1.8
+
+    effective_refl_mask = refl_mask * grad
+    canvas = canvas * (1.0 - effective_refl_mask) + refl_rgb * effective_refl_mask
+
+    # 2. Tạo bóng đổ tiếp xúc (Contact Shadow) dạng elip mờ ngay tại y_bottom
+    shadow_map = np.zeros((h, w), dtype=np.float32)
+    center_x = (x_min + x_max) // 2
+    axis_x = max(10, int((x_max - x_min) * 0.48))
+    axis_y = max(4, int(h * 0.018))
+    cv2.ellipse(shadow_map, (center_x, y_bottom), (axis_x, axis_y), 0, 0, 360, shadow_strength, -1)
+    shadow_map = cv2.GaussianBlur(shadow_map, (41, 15), 12.0)[:, :, np.newaxis]
+    canvas = canvas * (1.0 - shadow_map)
+
+    # 3. Đặt sản phẩm gốc nguyên vẹn 100% lên trên cùng
+    final_img = canvas * (1.0 - alpha_f) + orig_rgb.astype(np.float32) * alpha_f
+    return np.clip(final_img, 0, 255).astype(np.uint8)
 ```
 
-| Mã lỗi | HTTP | Ý nghĩa |
-|---|---|---|
-| `INVALID_FILE_TYPE` | 400 | Định dạng không hỗ trợ |
-| `IMAGE_TOO_SMALL` / `IMAGE_TOO_LARGE` | 422 | Ngoài giới hạn kích thước |
-| `NO_FACE_DETECTED` | 422 | Chức năng cần mặt |
-| `NO_CLOSED_EYES` | 422 | Không có mắt nhắm để sửa |
-| `OWNERSHIP_REQUIRED` | 403 | Thiếu `ownership_confirmed` |
-| `RATE_LIMITED` | 429 | Quá giới hạn |
-| `QA_FAILED_BEST_EFFORT` | 200 | Trả bản tốt nhất kèm cảnh báo |
-| `PROVIDER_TIMEOUT` | 504 | Nhà cung cấp quá hạn |
+---
 
-**Schema recipe YAML (rút gọn)**
+## 4. Bảng Ánh Xạ Chi Tiết 10 Chức Năng Nghiệp Vụ (Cho AI Agent Lập Trình)
 
-```yaml
-id: open_eyes
-version: 1
-steps:
-  - detect: { faces: true, eyes_ear: true }
-  - filter: { only_closed_eyes: true, ear_below: 0.2 }
-  - edit:   { provider: inpaint_face, strength: 0.5, padding: 0.3 }
-  - blend:  { method: feather, radius_px: 8 }
-  - qa:
-      ear_min: 0.2
-      identity_cosine_min: 0.85
-      outside_mask_ssim_min: 0.98
-retry: { max: 2, strength_step: -0.1, reseed: true }
-prompt: { vi: prompts/open_eyes.vi.md, en: prompts/open_eyes.en.md }
-```
+| # | Recipe ID | Detectors (Bước 2) | Mask & ROI (Bước 3) | Luồng Xử Lý Hybrid CV + GPU (Bước 4 & 5) | Chỉ Số QA Bắt Buộc (Bước 6) |
+|---|---|---|---|---|---|
+| **1** | `upscale_4k` | `RetinaFace` (Lấy embedding mặt gốc) | Toàn ảnh (Chia Tiled $512 \times 512$, overlap $64\text{px}$) | 1. Khử nhiễu nén JPEG nhẹ.<br>2. Chạy **Real-ESRGAN 4x + ControlNet Tile** (`strength=0.15`).<br>3. Khớp Histogram màu `LAB` với ảnh gốc để giữ nguyên 100% cân bằng trắng và hướng sáng. | `identity_cosine >= 0.95`<br>`ssim_downscaled >= 0.92`<br>`clip_ratio_diff < 0.01` |
+| **2** | `skin_retouch` | `BiSeNet` (Tách vùng da mặt/cổ; loại trừ mắt, mày, môi, tóc, râu) | Mask da + Phát hiện đốm mụn bằng Black-hat | 1. **LaMa GPU** xóa mụn trên mask đốm mụn.<br>2. **Frequency Separation**: Làm mịn lớp `Low-Freq`, giữ nguyên và ghép lại $85\%$ lớp lỗ chân lông `High-Freq`.<br>3. Upscale 3x bằng Real-ESRGAN. | `identity_cosine >= 0.95`<br>`delta_e_skin <= 1.8`<br>`texture_variance >= 0.7 * orig` (Chống da nhựa) |
+| **3** | `chin_fix` | `MediaPipe 468` / `68 Landmarks` + Ước lượng góc `pitch` | Mask vùng dưới cằm (`submental_mask`) + Lưới TPS | 1. Chạy **TPS Geometry Warp** nâng nhẹ đường hàm ($3\%$) và giảm độ lộ lỗ mũi ($1.5\%$), khóa cứng mắt & hậu cảnh.<br>2. Dùng **IC-Light / Inpaint nhẹ** (`strength=0.28`) làm dịu bóng đen dưới cằm.<br>3. Ghép lại lớp lỗ chân lông da cổ. | `identity_cosine >= 0.92`<br>`outside_roi_ssim == 1.0` |
+| **4** | `open_eyes` | `RetinaFace` + Đo độ mở mắt `EAR` từng người trong nhóm | Chỉ lọc người có `EAR < 0.20`. Cắt ROI từng cặp mắt + `pad=0.3` | 1. Tính hướng nhìn và màu da trung bình của từng người.<br>2. Chạy **Face Inpaint GPU** mở mắt tự nhiên trên từng ROI độc lập.<br>3. Ghép lại bằng **Poisson Seamless Clone** vào mặt gốc. | `ear_after >= 0.22`<br>`identity_cosine >= 0.88`<br>`outside_mask_ssim >= 0.995` |
+| **5** | `remove_watermark` | `PaddleOCR` + `YOLOv8-Logo` + Mask người dùng vẽ thêm | Dilate mask $5\text{px}$, khóa trừ vùng mặt nếu chồng lấn | 1. Bắt buộc kiểm tra `ownership_confirmed == True` & ghi SQLite `audit_logs`.<br>2. Chạy **LaMa Inpainting GPU** tái tạo nền.<br>3. Chỉ ghi đè đúng các pixel nằm trong mask. | `ocr_recheck_chars == 0`<br>`outside_mask_ssim == 1.0` |
+| **6** | `remove_bystanders` | `YOLOv8-seg` + `Depth Anything V2` | Giữ chủ thể chính (gần camera nhất / người dùng chạm chọn). Mask người phụ + bóng đổ dưới chân | 1. Mở rộng mask bao phủ bóng đổ của người phụ.<br>2. Chạy **LaMa / SDXL Depth-ControlNet Inpaint** tái tạo kiến trúc/cảnh vật hậu cảnh.<br>3. Khóa cứng 100% pixel chủ thể chính. | `bystander_count_after == 0`<br>`subject_mask_ssim == 1.0` |
+| **7** | `restore_old_photo` | Phân tích ảnh đen trắng/màu + Detector vết rách/xước | Mask vết rách (`scratch_mask`) + ROI khuôn mặt | 1. **LaMa** vá vết rách/nếp gấp.<br>2. **CodeFormer** (`w=0.85`) khôi phục nét mặt tự nhiên.<br>3. Nếu ảnh B&W: chạy **DDColor** tô màu lịch sử.<br>4. Upscale lên **4K (cạnh dài 4096px)** + phủ hạt phim mịn (`Film Grain`). | `identity_cosine >= 0.88`<br>`clip_ratio < 0.01`<br>`max_edge == 4096` |
+| **8** | `golden_hour` | `BiSeNet` + `MODNet` (Tách sợi tóc) + `Depth Map` | Mask hậu cảnh, chủ thể và viền tóc ngược sáng (`rim_hair_mask`) | 1. Chạy **IC-Light GPU** chiếu nắng ấm chéo từ phía trước.<br>2. Tăng sáng ấm (Subsurface Rim-light) dọc theo các sợi tóc lòa xòa.<br>3. **Frequency Re-injection**: Ghép lại 100% lớp chi tiết `High-Freq` của ảnh gốc để giữ nguyên cấu trúc mặt và hậu cảnh. | `identity_cosine >= 0.95`<br>`structure_ssim >= 0.94`<br>`clip_ratio < 0.01` |
+| **9** | `low_light_fix` | `RetinaFace` + Phân tích vùng bóng gắt Flash & vùng ám màu | Mask vùng tối, vùng bóng gắt dưới mũi/cằm, vùng lóa trán | 1. Cân bằng trắng tự động **Gray-World / Retinex** khử ám cam/xanh.<br>2. Nâng sáng vùng tối bằng đường cong cục bộ / **Zero-DCE++**.<br>3. Làm dịu bóng gắt đèn flash quanh mũi/cằm và ghép lại kết cấu da thật. | `delta_e_skin` chuẩn tự nhiên<br>`clip_ratio < 0.01`<br>`identity_cosine >= 0.96` |
+| **10** | `product_studio` | `BiRefNet` (Tách sản phẩm siêu nét) + `PaddleOCR` (Khóa chữ/logo) | `product_alpha_matte` (Khóa bất biến toàn bộ bên trong sản phẩm) | 1. Sinh nền Studio sang trọng bằng **IC-Light Background**.<br>2. Chạy thuật toán `compose_luxury_studio_product` tạo bóng tiếp xúc & phản chiếu mặt bàn.<br>3. Đặt nguyên vẹn 100% pixel sản phẩm gốc lên trên (Logo/chữ không đổi 1 pixel). | `product_iou == 1.0`<br>`logo_ocr_similarity == 1.0`<br>`product_pixel_diff == 0.0` |
 
-*(Các ngưỡng là giá trị khởi đầu; hiệu chỉnh bằng golden set, ghi lại trong `PROGRESS.md`.)*
+---
 
-## 7. Test plan
+## 5. Lộ Trình Thực Thi Từng Bước Dành Cho AI Agent
 
-| Tầng | Công cụ | Nội dung | Tiêu chí |
-|---|---|---|---|
-| Unit | pytest, vitest | EAR, SSIM, mask dilate/feather, recipe parser, validators | Coverage lõi ≥ 80% |
-| Integration | pytest + docker-compose | API → queue → worker (provider mock) → kết quả | Job đầu-cuối pass; job lỗi không treo worker |
-| Golden/Regression | Script QA | ≥ 20 ảnh/chức năng, `expected.json` | QA pass ≥ 90%; CI chặn merge khi giảm |
-| E2E | Playwright | Upload → chọn chức năng → chạy → trước/sau → tải | Luồng chính pass ở viewport 380px |
-| Hiệu năng | Locust/k6 | 50 job đồng thời, ảnh 12MP | p95 thời gian/job và chi phí/job được ghi lại |
-| Bảo mật | Bandit, pip-audit, npm audit, ZAP | Upload độc, IDOR, injection | Không còn lỗi mức cao |
-| Lỗi/biên | pytest | Không có mặt, ảnh nhóm, mặt nhỏ, đeo kính, EXIF xoay, PNG alpha, ảnh quá lớn/nhỏ | Báo lỗi rõ, không crash |
+Khi AI Agent nhận file này, hãy thực hiện tuần tự 4 Phase sau:
 
-**Golden set — cấu trúc:** `tests/golden/<recipe_id>/images/*.jpg` và `expected.json` (nhãn, vùng mong đợi, ngưỡng). Phủ đủ: ánh sáng khác nhau, tông da khác nhau, ảnh nhóm, ảnh góc nghiêng.
+### Phase 1: Khởi tạo Core Engine, SQLite & Quản lý GPU
+1. Tạo cấu trúc thư mục theo đúng **Mục 2** và file `pyproject.toml`.
+2. Viết `src/photoai/storage/db.py` (SQLite với 3 bảng: `jobs`, `qa_reports`, `audit_logs`) và `workspace.py`.
+3. Viết `VRAMModelManager` (`vram_manager.py`), `PipelineContext` (`context.py`), `RecipeSchema` (`recipe_schema.py`) và `RecipeRunner` 7 bước (`runner.py`).
+4. Viết bộ `tests/unit/test_engine.py` kiểm tra luồng nạp/xả VRAM và khóa bất biến ảnh gốc.
 
-**Ma trận QA:**
+### Phase 2: Xây dựng Thư viện Thuật toán Classical CV & Bộ đo QA
+1. Viết đầy đủ 4 module trong `src/photoai/processors/cv_ops/`:
+   - `frequency_sep.py` (Tách/ghép tần số da).
+   - `geometry_tps.py` (Biến dạng lưới TPS chỉnh góc mặt).
+   - `color_lighting.py` (Cân bằng trắng, Histogram Matching, CLAHE, Film Grain).
+   - `studio_physics.py` (Bóng đổ và phản chiếu Studio).
+2. Viết `src/photoai/qa/metrics.py` và `evaluator.py` tính toán chính xác: `SSIM`, `ArcFace Cosine`, `EAR`, `CIELAB Delta-E`, `Texture Variance` (Laplacian), `Clip Ratio`.
+3. Viết Unit Test kiểm chứng từng thuật toán toán học và hàm chấm điểm QA.
 
-| Chỉ số | Ngưỡng khởi đầu |
-|---|---|
-| `identity_cosine` | ≥ 0.85 (hiệu chỉnh) |
-| `outside_mask_ssim` | ≥ 0.98 |
-| `ear` (mắt mở) | ≥ 0.20 |
-| `clip_ratio` | < 1% pixel |
-| `delta_e_skin` | ≤ ngưỡng đặt trong YAML |
-| `ocr_recheck` | Không còn chữ watermark |
-| `person_recheck` | Không còn người trong vùng xóa |
+### Phase 3: Tích hợp Detectors, AI Wrappers (PyTorch GPU) & 10 Recipes
+1. Hiện thực các Detectors trong `src/photoai/detectors/` và các AI Wrappers trong `src/photoai/processors/ai_wrappers/` (tất cả đều gọi qua `VRAMModelManager`).
+2. Tạo đủ 10 file cấu hình `recipes/<id>.yaml` và 10 file prompt trong `prompts/<id>.vi.md` giữ nguyên 100% nội dung đặc tả gốc của người dùng.
+3. Kết nối cơ chế **Auto-Retry & Fallback**: nếu `s6_qa.py` báo trượt ngưỡng, `runner.py` tự động giảm `strength` đi `0.1` và chạy lại bước 4; nếu quá 2 lần vẫn trượt thì trả về bản xử lý từ `cv_ops` kèm cảnh báo.
 
-## 8. Checklist bảo mật & riêng tư
-
-**Upload & dữ liệu**
-- [ ] Kiểm tra magic bytes, không tin `Content-Type`; whitelist JPEG/PNG/WebP
-- [ ] Giới hạn kích thước/độ phân giải; chống decompression bomb
-- [ ] Xóa metadata (EXIF GPS) ở bản kết quả
-- [ ] Quét/sandbox xử lý ảnh; worker chạy quyền thấp, không có mạng ngoài trừ provider đã khai báo
-- [ ] Ảnh gốc bất biến; TTL tự xóa (ảnh + mask + kết quả)
-
-**Truy cập**
-- [ ] Xác thực mọi endpoint (trừ `/healthz`); kiểm tra quyền sở hữu asset/job (chống IDOR)
-- [ ] Presigned URL ngắn hạn, một mục đích
-- [ ] Rate limit theo user/IP; giới hạn job đồng thời
-- [ ] CORS whitelist; CSRF nếu dùng cookie
-
-**Bí mật & hạ tầng**
-- [ ] API key trong secret manager/biến môi trường, không commit; bật secret scanning
-- [ ] Mã hóa lưu trữ và truyền tải (TLS)
-- [ ] Quét phụ thuộc định kỳ; ghim phiên bản; image Docker tối thiểu
-- [ ] Backup DB, kiểm thử khôi phục
-
-**Riêng tư**
-- [ ] Không log nội dung ảnh/khuôn mặt/embedding; chỉ log metadata
-- [ ] Không gửi ảnh ra dịch vụ ngoài chưa khai báo; liệt kê provider trong chính sách riêng tư
-- [ ] Không train trên dữ liệu người dùng
-- [ ] Cho phép xóa dữ liệu theo yêu cầu
-
-**Lạm dụng**
-- [ ] `remove_watermark`: bắt buộc `ownership_confirmed=true` + ghi `audit_logs` (user, job, thời gian, IP băm)
-- [ ] Cảnh báo rõ khi người dùng xác nhận; từ chối nếu thiếu
-- [ ] Giám sát mẫu lạm dụng bất thường
-
-## 9. Mẫu báo cáo
-
-**9.1 Báo cáo QA mỗi job** (`qa_report` JSON, xem §6) — lưu trong `qa_reports`.
-
-**9.2 Báo cáo chạy golden set** (`docs/reports/golden-<recipe>-<ngày>.md`)
-
-```md
-# Golden report: open_eyes — 2026-10-16
-- Phiên bản recipe/prompt/model: ...
-- Số ảnh: 20 | Pass: 19 (95%) | Fail: 1
-- Trung bình: identity 0.91, ear 0.26, outside_ssim 0.990
-- Thời gian p50/p95: 6s / 11s | Chi phí/job: $0.0x
-- Ảnh fail: img_07 (mặt nghiêng) — nguyên nhân, đề xuất
-- So với lần trước: +/- ...
-```
-
-**9.3 Báo cáo cuối giai đoạn** (`docs/reports/phase-Px.md`): việc xong, chỉ số đạt, rủi ro, quyết định, việc chuyển tiếp.
-
-**9.4 `PROGRESS.md`:** dùng mẫu ở §8 của AGENT_SKILLS.
-
-## 10. Lộ trình từng bước (làm gì, làm theo thứ tự)
-
-### P0 — Nền móng (không có AI thật)
-1. Tạo repo theo cấu trúc §3; khởi tạo `PROGRESS.md`, `docs/` và các file trống.
-2. Thiết lập CI: lint, type-check, pytest, vitest, secret scan.
-3. Viết `recipe_schema.py` (Pydantic) + test parser với YAML mẫu.
-4. Viết `providers/base.py` + `mock.py` (trả ảnh giả có thể kiểm chứng).
-5. Viết Recipe Runner (S1): detect → filter → edit → blend → qa, có retry; test bằng mock.
-6. Dựng DB + migration theo ERD §4; repository và service cơ bản.
-7. Dựng API tối thiểu: presign, tạo job, xem job (§6); queue + worker chạy job mock.
-8. Viết module QA khung (`report.py`) và test; docker-compose chạy toàn bộ.
-9. **Xong khi:** gửi job mock đầu-cuối, CI xanh, báo cáo P0.
-
-### P1 — Chức năng dễ đo trước (S3, S5, S6, S11)
-1. Detector mặt + EAR (S3); golden set mắt nhắm/mở; đạt ≥ 95%.
-2. Đo QA: `outside_mask_ssim`, `identity_cosine`, `lpips`.
-3. Chức năng 4 `open_eyes` (detect → mask mắt → inpaint → blend → QA).
-4. Chức năng 6 `remove_bystanders` (S4 chọn chủ thể chính + LaMa + `person_recheck`).
-5. Chức năng 5 `remove_watermark` (OCR/logo detect + inpaint + `ocr_recheck` + cờ sở hữu + audit log).
-6. Chức năng 1 `upscale_4k` (SR tile + giới hạn cạnh dài 8192).
-7. Với mỗi chức năng: YAML + prompt vi/en + golden ≥ 20 ảnh + báo cáo golden.
-
-### P2 — Chân dung & màu (S7, S8)
-1. Face parsing + tách tần số → chức năng 2 `skin_retouch`; đo `delta_e_skin`, phương sai kết cấu.
-2. Chức năng 3 `chin_fix` (crop nhỏ, strength thấp, kiểm danh tính nghiêm).
-3. Màu: white balance, tone mapping cục bộ → chức năng 9 `low_light_fix`.
-4. Chức năng 8 `golden_hour` (relight mềm, kiểm `clip_ratio`).
-
-### P3 — Chức năng phức tạp (S9, S10)
-1. Chức năng 7: phân loại ảnh → mask hư hại → inpaint → khử nhiễu → khôi phục mặt → tô màu (tùy chọn, có công tắc) → upscale.
-2. Chức năng 10: tách nền → nền studio → bóng/phản chiếu → khớp màu → grade; kiểm hình dáng/logo/màu.
-3. **Mâu thuẫn chưa giải quyết:** yêu cầu "Full HD 32k" ở chức năng 7 — phải hỏi người dùng chốt độ phân giải mục tiêu trước khi làm (AGENT_SKILLS §2.9).
-
-### P4 — Sản phẩm hóa
-1. Frontend (S14): lưới 10 chức năng, upload, canvas mask, chạm chọn chủ thể, slider trước/sau, panel QA; đọc skill `frontend-design` trước khi dựng.
-2. Playwright cho luồng chính ở 380px; Lighthouse PWA.
-3. Hạ tầng (S15): GPU worker, secret manager, mã hóa, TTL, audit.
-4. Chạy test hiệu năng và bảo mật (§7, §8); xử lý hết lỗi mức cao.
-5. Ghi nhận chi phí/độ trễ từng chức năng; chốt provider chính theo chi phí/chất lượng.
-6. Báo cáo phát hành + chính sách riêng tư.
-
-## 11. Checklist "Xong" tổng
-
-- [ ] 10 recipe YAML + prompt `.vi.md` / `.en.md`, ràng buộc gốc không bị làm yếu
-- [ ] Mỗi chức năng: QA đủ chỉ số, golden ≥ 20 ảnh, pass ≥ 90%
-- [ ] Xử lý lỗi biên không crash
-- [ ] API khớp §6, có test tích hợp
-- [ ] ERD đã migrate, có chỉ mục và ràng buộc
-- [ ] Checklist bảo mật §8 đánh dấu hết
-- [ ] UI đầy đủ luồng + trước/sau, dùng tốt ở ~380px
-- [ ] Đã ghi phiên bản model/provider, chi phí và thời gian mỗi job
-- [ ] `PROGRESS.md` và báo cáo từng giai đoạn cập nhật
-
-## 12. Câu hỏi cần bạn chốt
-
-1. Độ phân giải mục tiêu của phục chế ảnh cũ (thay cho "Full HD 32k")?
-2. Provider chỉnh sửa chính: ưu tiên chi phí hay chất lượng?
-3. Triển khai đám mây hay tự host GPU?
-4. Cần đăng nhập/tài khoản ngay, hay bản đầu ẩn danh có TTL?
+### Phase 4: Xây dựng Giao diện Desktop PySide6 (Qt6)
+1. Thiết kế `main_window.py` với giao diện Dark Mode chuyên nghiệp cho chỉnh sửa ảnh.
+2. Xây dựng `interactive_canvas.py` hỗ trợ lăn chuột Zoom/Pan ảnh 4K, cọ vẽ Mask (cho xóa watermark/xóa người) và click chọn chủ thể.
+3. Xây dựng `before_after_view.py` (thanh gạt so sánh ảnh gốc và ảnh sau xử lý trực tiếp trên vùng nhìn) và `qa_panel.py` hiển thị huy hiệu Xanh/Vàng cho từng chỉ số QA.
+4. Tích hợp `QThread` trong `workers_qt.py` để cập nhật thanh tiến trình theo từng bước (`Ingest -> Detect -> Mask -> GPU Edit -> Blend -> QA -> Done`).

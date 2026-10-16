@@ -1,0 +1,274 @@
+/* Photo AI Desktop — dark theme (OLED / high contrast).
+ * Style: dark surfaces, high-contrast text, visible focus, consistent radii.
+ * Palette mirrors src/photoai/ui/theme.py — keep both in sync.
+ *   bg #0B1120 · surface #0F172A · elevated #1E293B · border #334155
+ *   text #F8FAFC · muted #94A3B8 · accent #22C55E
+ */
+
+/* ---------- base ---------- */
+QWidget {
+    background-color: #0B1120;
+    color: #F8FAFC;
+    font-family: "Segoe UI", "Inter", "Noto Sans", system-ui, sans-serif;
+    font-size: 13px;
+}
+
+QMainWindow, QDialog { background-color: #0B1120; }
+
+QToolTip {
+    background-color: #1E293B;
+    color: #F8FAFC;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 6px 8px;
+}
+
+/* ---------- menu + toolbar ---------- */
+QMenuBar { background-color: #0F172A; border-bottom: 1px solid #1E293B; }
+QMenuBar::item { padding: 6px 10px; background: transparent; border-radius: 6px; }
+QMenuBar::item:selected { background-color: #1E293B; }
+
+QMenu { background-color: #0F172A; border: 1px solid #334155; border-radius: 8px; padding: 6px; }
+QMenu::item { padding: 7px 22px 7px 12px; border-radius: 6px; }
+QMenu::item:selected { background-color: #1E293B; }
+QMenu::separator { height: 1px; background: #1E293B; margin: 6px 8px; }
+
+QToolBar {
+    background-color: #0F172A;
+    border: none;
+    border-bottom: 1px solid #1E293B;
+    padding: 8px 12px;
+    spacing: 8px;
+}
+QToolBar QToolButton {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: #F8FAFC;
+}
+QToolBar QToolButton:hover { background-color: #243449; border-color: #475569; }
+QToolBar QToolButton:focus { border: 1px solid #22C55E; }
+
+/* ---------- canvas tool buttons (segmented style) ---------- */
+QToolButton {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: #F8FAFC;
+}
+QToolButton:hover { background-color: #243449; border-color: #475569; }
+QToolButton:checked {
+    background-color: #1D3A2E;
+    border: 1px solid #22C55E;
+    color: #22C55E;
+    font-weight: 600;
+}
+
+/* ---------- structure ---------- */
+QStatusBar { background-color: #0F172A; border-top: 1px solid #1E293B; color: #94A3B8; }
+QStatusBar::item { border: none; }
+
+QSplitter::handle { background-color: #1E293B; }
+QSplitter::handle:horizontal { width: 2px; }
+QSplitter::handle:vertical { height: 2px; }
+QSplitter::handle:hover { background-color: #22C55E; }
+
+QDockWidget { titlebar-close-icon: none; titlebar-normal-icon: none; }
+QDockWidget::title {
+    background-color: #0F172A;
+    border-bottom: 1px solid #1E293B;
+    padding: 8px 12px;
+    color: #94A3B8;
+    text-transform: uppercase;
+}
+
+/* ---------- text roles ---------- */
+QLabel[role="h1"] { font-size: 18px; font-weight: 600; }
+QLabel[role="h2"] { font-size: 14px; font-weight: 600; }
+QLabel[role="caption"] { color: #94A3B8; font-size: 12px; }
+QLabel[role="faint"] { color: #64748B; font-size: 12px; }
+QLabel[role="mono"] { font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace; }
+QLabel[role="banner"] {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-left: 3px solid #38BDF8;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #F8FAFC;
+}
+QLabel[tone="error"] {
+    border-left: 3px solid #F87171;
+    background-color: #2A1518;
+}
+QLabel[tone="success"] {
+    border-left: 3px solid #22C55E;
+    background-color: #12251A;
+}
+
+/* ---------- buttons ---------- */
+QPushButton {
+    background-color: #1E293B;
+    color: #F8FAFC;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 8px 14px;
+    min-height: 18px;
+}
+QPushButton:hover { background-color: #243449; border-color: #475569; }
+QPushButton:pressed { background-color: #172033; }
+QPushButton:focus { border: 1px solid #22C55E; }
+QPushButton:disabled { color: #64748B; background-color: #131C2E; border-color: #1E293B; }
+
+QPushButton#PrimaryButton {
+    background-color: #22C55E;
+    color: #052E16;
+    border: 1px solid #22C55E;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 6px;
+}
+QPushButton#PrimaryButton:hover { background-color: #16A34A; border-color: #16A34A; }
+QPushButton#PrimaryButton:pressed { background-color: #15803D; }
+QPushButton#PrimaryButton:disabled { background-color: #1E293B; color: #64748B; border-color: #334155; }
+
+QPushButton#GhostButton { background-color: transparent; border: 1px solid #334155; }
+QPushButton#GhostButton:hover { background-color: #1E293B; border-color: #475569; }
+
+/* ---------- sliders ---------- */
+QSlider::groove:horizontal {
+    height: 6px;
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 3px;
+}
+QSlider::sub-page:horizontal {
+    background: #22C55E;
+    border-radius: 3px;
+}
+QSlider::handle:horizontal {
+    background: #F8FAFC;
+    border: 2px solid #22C55E;
+    width: 14px;
+    margin: -5px 0;
+    border-radius: 7px;
+}
+QSlider::handle:horizontal:hover {
+    background: #22C55E;
+    border-color: #16A34A;
+}
+
+/* ---------- inputs ---------- */
+QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QPlainTextEdit {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 6px 8px;
+    selection-background-color: #22C55E;
+    selection-color: #052E16;
+}
+QLineEdit:focus, QSpinBox:focus, QComboBox:focus { border: 1px solid #22C55E; }
+
+QCheckBox { spacing: 8px; }
+QCheckBox::indicator {
+    width: 16px; height: 16px;
+    border: 1px solid #475569; border-radius: 4px;
+    background-color: #1E293B;
+}
+QCheckBox::indicator:hover { border-color: #22C55E; }
+QCheckBox::indicator:checked { background-color: #22C55E; border-color: #22C55E; }
+
+/* ---------- tool list (sidebar) ---------- */
+QListWidget#ToolSelector {
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    padding: 2px;
+}
+QListWidget#ToolSelector::item {
+    background: transparent;
+    border: none;
+    padding: 0px;
+    margin: 2px 0px;
+}
+
+/* ---------- recipe card ---------- */
+QFrame#RecipeCard {
+    background-color: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 8px;
+}
+QLabel#RecipeCardHeader {
+    color: #22C55E;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* ---------- QA table ---------- */
+QTreeWidget, QTableWidget {
+    background-color: #0F172A;
+    alternate-background-color: #0F172A;
+    border: none;
+    outline: 0;
+}
+QTreeWidget::item, QTableWidget::item { padding: 6px 8px; border-bottom: 1px solid #16233A; }
+QHeaderView::section {
+    background-color: #0F172A;
+    color: #94A3B8;
+    border: none;
+    border-bottom: 1px solid #334155;
+    padding: 7px 8px;
+    font-weight: 600;
+}
+
+/* ---------- progress + scrollbars ---------- */
+QProgressBar {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    height: 10px;
+    text-align: center;
+    color: transparent;
+}
+QProgressBar::chunk { background-color: #22C55E; border-radius: 5px; }
+
+QScrollBar:vertical { background: transparent; width: 10px; margin: 2px; }
+QScrollBar::handle:vertical { background: #334155; border-radius: 5px; min-height: 28px; }
+QScrollBar::handle:vertical:hover { background: #475569; }
+QScrollBar:horizontal { background: transparent; height: 10px; margin: 2px; }
+QScrollBar::handle:horizontal { background: #334155; border-radius: 5px; min-width: 28px; }
+QScrollBar::add-line, QScrollBar::sub-line { height: 0; width: 0; }
+QScrollBar::add-page, QScrollBar::sub-page { background: transparent; }
+
+/* ---------- status & info chips ---------- */
+QLabel#DeviceChip {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: #94A3B8;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 11px;
+}
+
+QLabel#ImageInfoChip {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 3px 8px;
+    color: #38BDF8;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 11px;
+}
+
+QLabel#BrushSizeLabel {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #94A3B8;
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 11px;
+}
